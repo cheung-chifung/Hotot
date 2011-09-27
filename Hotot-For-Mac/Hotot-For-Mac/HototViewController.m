@@ -190,6 +190,8 @@
         } else if ( [ext isEqualToString:@"jpg"]  ||
                     [ext isEqualToString:@"jpeg"] ||
                     [ext isEqualToString:@"gif"]  ||
+                    [ext isEqualToString:@"bmp"]  ||
+                    [ext isEqualToString:@"tiff"] ||
                     [ext isEqualToString:@"png"]  ){
             
             // show HUD window
@@ -255,21 +257,28 @@
  */
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame
 {
+    //Get fonts
+    NSArray *fontFamilies = [[NSFontManager sharedFontManager] availableFontFamilies];
+    NSString *fonts = [fontFamilies count] > 0 ?
+                        [NSString stringWithFormat:@"[\"%@\"]",[fontFamilies componentsJoinedByString:@"\",\""]] :
+                        @"''";
+    
+    //Get locale
+    NSString *locale = [[NSLocale currentLocale] localeIdentifier];
+    
+    //Generate the trigger
     NSString *_trigger_js = @"overlay_variables({platform:'Mac',"
-                                                 "conf_dir:'%@',"
-                                                "cache_dir:'%@',"
-                                         "avatar_cache_dir:'%@',"
-                                              "extra_fonts:'%@',"
-                                               "extra_exts:'%@',"
-                                             "extra_themes:'%@',"
+                                                 "conf_dir:'%@'," //Not supported yet
+                                                "cache_dir:'%@'," //Not supported yet
+                                         "avatar_cache_dir:'%@'," //Not supported yet
+                                              "extra_fonts: %@ ,"
+                                               "extra_exts:'%@'," //Not supported yet
+                                             "extra_themes:'%@'," //Not supported yet
                                                  "locale:'%@'});"
                                           "globals.load_flags=1;";
 
-    _trigger_js = [NSString stringWithFormat:_trigger_js,@"",@"",@"",@"",@"",@"",@"en_US"];
-    [sender stringByEvaluatingJavaScriptFromString:_trigger_js];
-    DLog(@"Inject startup javascript code");
-    
-    //[[NSApp delegate] showTweetBox];    
+    _trigger_js = [NSString stringWithFormat:_trigger_js,@"",@"",@"",fonts,@"",@"",locale];
+    [sender stringByEvaluatingJavaScriptFromString:_trigger_js]; 
     
 }
 
