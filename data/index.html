@@ -254,6 +254,29 @@ function hotot_log(label, content) {
         }
     }
 }
+function unread_alert(count) {
+    var sp = 0;
+    var proc = function (){
+        sp ^= 1;
+        document.title = '('+(sp?globals.unread_count:' ! ')+')' + _('hotot') + ' | ' + conf.current_name;
+        globals.unread_alert_timer = setTimeout(proc, 2000);
+    }
+    clearTimeout(globals.unread_alert_timer);
+    if (count == 0) {
+        globals.unread_count = 0;
+        document.title = _('hotot') + ' | ' + conf.current_name;
+        if (util.is_native_platform()) {
+            hotot_action('system/unread_alert/0');
+        }
+    } else {
+        globals.unread_count += count;
+        if (util.is_native_platform()) {
+            hotot_action('system/unread_alert/'+globals.unread_count);
+        } else {
+            proc();
+        }
+    }
+}
 
 /* 
     = startup process =
@@ -644,6 +667,8 @@ var globals = {
     , in_main_view: false
     , load_flags: 0
     , ratelimit_bubble: null
+    , unread_alert_timer: null
+    , unread_count: null
 };
 
 jQuery(function($) {
@@ -700,6 +725,9 @@ jQuery(function($) {
             ui.Slider.slide_to_prev();
         }
     };
+    $('body').focus(function () {    
+        unread_alert(0);
+    });
 
     $(window).resize(
     function () {
@@ -1483,7 +1511,7 @@ jQuery(function($) {
             </p>
             <p style="text-align:center;">Copyright © 2009-2011 Shellex Wai</p>
             <p>
-            Project Host: <a target="_blank" href="http://code.google.com/p/hotot">http://code.google.com/p/hotot/</a>
+            Project Host: <a target="_blank" href="https://github.com/shellex/Hotot/">https://github.com/shellex/Hotot/</a>
             </p>
             <p>Project Site: <a target="_blank" href="http://hotot.org">http://hotot.org</a></p>
             </div>
