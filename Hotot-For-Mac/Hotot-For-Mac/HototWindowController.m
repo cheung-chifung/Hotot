@@ -2,21 +2,25 @@
 //  HototWindowController.m
 //  Hotot-For-Mac
 //
-//  Created by 張 志鋒 on 11/09/24.
-//  Copyright 2011年 __MyCompanyName__. All rights reserved.
+//  Created by @Kee_Kun on 11/09/24.
+//  Hotot For Mac is licensed under LGPL version 3.
 //
 
 #import "HototWindowController.h"
 
 @implementation HototWindowController
 
-- (void)windowDidLoad
-{
+@synthesize hototViewController;
+
+- (void)windowDidLoad {
     [super windowDidLoad];
     
     hototViewController = [[HototViewController alloc] initWithNibName:@"HototView" bundle:nil];
     [hototView addSubview:hototViewController.view];
-    
+}
+
+- (void)showTweetWindow {
+    [(WebView *)hototViewController.view stringByEvaluatingJavaScriptFromString:@"ui.StatusBox.open();"];
 }
 
 @end

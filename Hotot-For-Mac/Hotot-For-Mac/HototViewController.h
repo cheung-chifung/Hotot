@@ -2,8 +2,8 @@
 //  HototViewController.h
 //  Hotot-For-Mac
 //
-//  Created by 張 志鋒 on 11/09/24.
-//  Copyright 2011年 __MyCompanyName__. All rights reserved.
+//  Created by @Kee_Kun on 11/09/24.
+//  Hotot For Mac is licensed under LGPL version 3.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -19,15 +19,27 @@
 
 #import <Growl/Growl.h>
 
-#import "debug.h"
+#import "hotot.h"
 
 @protocol WebPolicyDelegate
+
+- (void)webView:(WebView *)webView decidePolicyForNavigationAction:(NSDictionary *)actionInformation request:(NSURLRequest *)request frame:(WebFrame *)frame decisionListener:(id<WebPolicyDecisionListener>)listener;
+- (void)webView:(WebView *)webView decidePolicyForNewWindowAction:(NSDictionary *)actionInformation request:(NSURLRequest *)request newFrameName:(NSString *)frameName decisionListener:(id<WebPolicyDecisionListener>)listener;
+
 @end
 
 @protocol WebFrameLoadDelegate
+
+- (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame;
+
 @end
 
 @protocol WebUIDelegate
+
+- (BOOL)webView:(WebView *)sender runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WebFrame *)frame;
+- (void)webView:(WebView *)sender runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WebFrame *)frame;
+- (void)webView:(WebView *)webView addMessageToConsole:(NSDictionary *)dictionary;
+
 @end
 
 @protocol WebResourceLoadDelegate

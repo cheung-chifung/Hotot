@@ -2,9 +2,20 @@
 //  debug.h
 //  Hotot-For-Mac
 //
-//  Created by 張 志鋒 on 11/09/24.
-//  Copyright 2011年 __MyCompanyName__. All rights reserved.
+//  Created by @Kee_Kun on 11/09/24.
+//  Hotot For Mac is licensed under LGPL version 3.
 //
+
+enum {
+    HototStatusInit         = 0,
+    HototStatusLoadFinished = 1,
+    HototStatusSignin       = 2
+};
+typedef NSUInteger HototStatus;
+
+#ifndef LOG_TO_FILE
+    #define LOG_TO_FILE YES
+#endif
 
 #ifndef Hotot_For_Mac_debug_h
 #define Hotot_For_Mac_debug_h

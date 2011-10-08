@@ -2,8 +2,8 @@
 //  HototWindowController.h
 //  Hotot-For-Mac
 //
-//  Created by 張 志鋒 on 11/09/24.
-//  Copyright 2011年 __MyCompanyName__. All rights reserved.
+//  Created by @Kee_Kun on 11/09/24.
+//  Hotot For Mac is licensed under LGPL version 3.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -14,5 +14,7 @@
     HototViewController *hototViewController;
     IBOutlet NSView *hototView;
 }
+
+@property (nonatomic, readonly) HototViewController *hototViewController;
 
 @end
