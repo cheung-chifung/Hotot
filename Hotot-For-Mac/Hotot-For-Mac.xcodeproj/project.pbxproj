@@ -1,0 +1,409 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2418AFEB144AF53400926156 /* HUDImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2418AFEA144AF53400926156 /* HUDImageController.m */; };
+		2418AFED144AF54500926156 /* HUDImage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2418AFEC144AF54500926156 /* HUDImage.xib */; };
+		2418AFEF144B0AC600926156 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2418AFEE144B0AC600926156 /* loading.gif */; };
+		241B6EEF142DB6D00043291E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 241B6EEE142DB6D00043291E /* Cocoa.framework */; };
+		241B6EF9142DB6D00043291E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 241B6EF7142DB6D00043291E /* InfoPlist.strings */; };
+		241B6EFB142DB6D00043291E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 241B6EFA142DB6D00043291E /* main.m */; };
+		241B6EFF142DB6D00043291E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 241B6EFD142DB6D00043291E /* Credits.rtf */; };
+		241B6F02142DB6D00043291E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 241B6F01142DB6D00043291E /* AppDelegate.m */; };
+		241B6F05142DB6D10043291E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 241B6F03142DB6D10043291E /* MainMenu.xib */; };
+		241B6F0D142DB7F90043291E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 241B6F0C142DB7F90043291E /* WebKit.framework */; };
+		241B6F10142DB8280043291E /* HototWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 241B6F0F142DB8280043291E /* HototWindowController.m */; };
+		241B6F12142DB9000043291E /* HototWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 241B6F11142DB9000043291E /* HototWindow.xib */; };
+		241B6F16142DBACB0043291E /* HototViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 241B6F14142DBACB0043291E /* HototViewController.m */; };
+		241B6F17142DBACB0043291E /* HototView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 241B6F15142DBACB0043291E /* HototView.xib */; };
+		241B6F19142DC2920043291E /* data in Resources */ = {isa = PBXBuildFile; fileRef = 241B6F18142DC2920043291E /* data */; };
+		241B6F1E142DC9C00043291E /* hotot.icns in Resources */ = {isa = PBXBuildFile; fileRef = 241B6F1D142DC9C00043291E /* hotot.icns */; };
+		241B6F26142DCBCF0043291E /* TweetWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 241B6F25142DCBCF0043291E /* TweetWindowController.m */; };
+		24253238142EB56C0041A5A9 /* TweetWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24253237142EB56C0041A5A9 /* TweetWindow.xib */; };
+		248CF5CB143F27630019DBAE /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248CF5CA143F27630019DBAE /* Sparkle.framework */; };
+		248CF5CD143F27B50019DBAE /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 248CF5CA143F27630019DBAE /* Sparkle.framework */; };
+		248CF5CF143F2CFB0019DBAE /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 248CF5CE143F2CFB0019DBAE /* dsa_pub.pem */; };
+		24B5B19314343EF500D05ED3 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24B5B19214343EF500D05ED3 /* Growl.framework */; };
+		24B5B19514343FAC00D05ED3 /* Growl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 24B5B19214343EF500D05ED3 /* Growl.framework */; };
+		24B965881436B9E6009C90CF /* Databases.db in Resources */ = {isa = PBXBuildFile; fileRef = 24B965871436B9E6009C90CF /* Databases.db */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		24B5B19414343F4B00D05ED3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				24B5B19514343FAC00D05ED3 /* Growl.framework in CopyFiles */,
+				248CF5CD143F27B50019DBAE /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2418AFE9144AF53400926156 /* HUDImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDImageController.h; sourceTree = "<group>"; };
+		2418AFEA144AF53400926156 /* HUDImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUDImageController.m; sourceTree = "<group>"; };
+		2418AFEC144AF54500926156 /* HUDImage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HUDImage.xib; path = "Hotot-For-Mac/HUDImage.xib"; sourceTree = "<group>"; };
+		2418AFEE144B0AC600926156 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = loading.gif; path = Resources/loading.gif; sourceTree = "<group>"; };
+		241B6EEA142DB6D00043291E /* Hotot-For-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hotot-For-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		241B6EEE142DB6D00043291E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		241B6EF1142DB6D00043291E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		241B6EF2142DB6D00043291E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		241B6EF3142DB6D00043291E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		241B6EF6142DB6D00043291E /* Hotot-For-Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Hotot-For-Mac-Info.plist"; sourceTree = "<group>"; };
+		241B6EF8142DB6D00043291E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		241B6EFA142DB6D00043291E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = main.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		241B6EFC142DB6D00043291E /* Hotot-For-Mac-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Hotot-For-Mac-Prefix.pch"; sourceTree = "<group>"; };
+		241B6EFE142DB6D00043291E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		241B6F00142DB6D00043291E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AppDelegate.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		241B6F01142DB6D00043291E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		241B6F04142DB6D10043291E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		241B6F0C142DB7F90043291E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
+		241B6F0E142DB8280043291E /* HototWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = HototWindowController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		241B6F0F142DB8280043291E /* HototWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = HototWindowController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		241B6F11142DB9000043291E /* HototWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HototWindow.xib; path = "Hotot-For-Mac/HototWindow.xib"; sourceTree = "<group>"; };
+		241B6F13142DBACB0043291E /* HototViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = HototViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		241B6F14142DBACB0043291E /* HototViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = HototViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		241B6F15142DBACB0043291E /* HototView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HototView.xib; path = "Hotot-For-Mac/HototView.xib"; sourceTree = "<group>"; };
+		241B6F18142DC2920043291E /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = ../data; sourceTree = "<group>"; };
+		241B6F1D142DC9C00043291E /* hotot.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = hotot.icns; sourceTree = "<group>"; };
+		241B6F24142DCBCF0043291E /* TweetWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TweetWindowController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		241B6F25142DCBCF0043291E /* TweetWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TweetWindowController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		24253237142EB56C0041A5A9 /* TweetWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetWindow.xib; path = "Hotot-For-Mac/TweetWindow.xib"; sourceTree = "<group>"; };
+		243C571A143FD6A7009A1D4A /* hotot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hotot.h; sourceTree = "<group>"; };
+		248CF5CA143F27630019DBAE /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = "Hotot-For-Mac/Frameworks/Sparkle.framework"; sourceTree = "<group>"; };
+		248CF5CE143F2CFB0019DBAE /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
+		24B5B19214343EF500D05ED3 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = "Hotot-For-Mac/Frameworks/Growl.framework"; sourceTree = "<group>"; };
+		24B965871436B9E6009C90CF /* Databases.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = Databases.db; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		241B6EE7142DB6D00043291E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				241B6EEF142DB6D00043291E /* Cocoa.framework in Frameworks */,
+				241B6F0D142DB7F90043291E /* WebKit.framework in Frameworks */,
+				24B5B19314343EF500D05ED3 /* Growl.framework in Frameworks */,
+				248CF5CB143F27630019DBAE /* Sparkle.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		241B6EDF142DB6D00043291E = {
+			isa = PBXGroup;
+			children = (
+				241B6F1D142DC9C00043291E /* hotot.icns */,
+				241B6F18142DC2920043291E /* data */,
+				241B6EF4142DB6D00043291E /* Hotot-For-Mac */,
+				241B6EED142DB6D00043291E /* Frameworks */,
+				241B6EEB142DB6D00043291E /* Products */,
+				241B6F0B142DB7A40043291E /* Resources */,
+			);
+			sourceTree = "<group>";
+		};
+		241B6EEB142DB6D00043291E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				241B6EEA142DB6D00043291E /* Hotot-For-Mac.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		241B6EED142DB6D00043291E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				241B6EEE142DB6D00043291E /* Cocoa.framework */,
+				241B6EF0142DB6D00043291E /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		241B6EF0142DB6D00043291E /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				248CF5CA143F27630019DBAE /* Sparkle.framework */,
+				24B5B19214343EF500D05ED3 /* Growl.framework */,
+				241B6F0C142DB7F90043291E /* WebKit.framework */,
+				241B6EF1142DB6D00043291E /* AppKit.framework */,
+				241B6EF2142DB6D00043291E /* CoreData.framework */,
+				241B6EF3142DB6D00043291E /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		241B6EF4142DB6D00043291E /* Hotot-For-Mac */ = {
+			isa = PBXGroup;
+			children = (
+				243C571A143FD6A7009A1D4A /* hotot.h */,
+				241B6EF5142DB6D00043291E /* Supporting Files */,
+				241B6F01142DB6D00043291E /* AppDelegate.m */,
+				241B6F00142DB6D00043291E /* AppDelegate.h */,
+				241B6F0E142DB8280043291E /* HototWindowController.h */,
+				241B6F0F142DB8280043291E /* HototWindowController.m */,
+				241B6F13142DBACB0043291E /* HototViewController.h */,
+				241B6F14142DBACB0043291E /* HototViewController.m */,
+				241B6F24142DCBCF0043291E /* TweetWindowController.h */,
+				241B6F25142DCBCF0043291E /* TweetWindowController.m */,
+				2418AFE9144AF53400926156 /* HUDImageController.h */,
+				2418AFEA144AF53400926156 /* HUDImageController.m */,
+			);
+			path = "Hotot-For-Mac";
+			sourceTree = "<group>";
+		};
+		241B6EF5142DB6D00043291E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				241B6EF6142DB6D00043291E /* Hotot-For-Mac-Info.plist */,
+				241B6EF7142DB6D00043291E /* InfoPlist.strings */,
+				241B6EFA142DB6D00043291E /* main.m */,
+				241B6EFC142DB6D00043291E /* Hotot-For-Mac-Prefix.pch */,
+				241B6EFD142DB6D00043291E /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		241B6F0B142DB7A40043291E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2418AFEE144B0AC600926156 /* loading.gif */,
+				2418AFEC144AF54500926156 /* HUDImage.xib */,
+				248CF5CE143F2CFB0019DBAE /* dsa_pub.pem */,
+				24B965871436B9E6009C90CF /* Databases.db */,
+				24253237142EB56C0041A5A9 /* TweetWindow.xib */,
+				241B6F03142DB6D10043291E /* MainMenu.xib */,
+				241B6F15142DBACB0043291E /* HototView.xib */,
+				241B6F11142DB9000043291E /* HototWindow.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		241B6EE9142DB6D00043291E /* Hotot-For-Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 241B6F08142DB6D10043291E /* Build configuration list for PBXNativeTarget "Hotot-For-Mac" */;
+			buildPhases = (
+				241B6EE6142DB6D00043291E /* Sources */,
+				241B6EE7142DB6D00043291E /* Frameworks */,
+				241B6EE8142DB6D00043291E /* Resources */,
+				24B5B19414343F4B00D05ED3 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Hotot-For-Mac";
+			productName = "Hotot-For-Mac";
+			productReference = 241B6EEA142DB6D00043291E /* Hotot-For-Mac.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		241B6EE1142DB6D00043291E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 241B6EE4142DB6D00043291E /* Build configuration list for PBXProject "Hotot-For-Mac" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 241B6EDF142DB6D00043291E;
+			productRefGroup = 241B6EEB142DB6D00043291E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				241B6EE9142DB6D00043291E /* Hotot-For-Mac */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		241B6EE8142DB6D00043291E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				241B6EF9142DB6D00043291E /* InfoPlist.strings in Resources */,
+				241B6EFF142DB6D00043291E /* Credits.rtf in Resources */,
+				241B6F05142DB6D10043291E /* MainMenu.xib in Resources */,
+				241B6F12142DB9000043291E /* HototWindow.xib in Resources */,
+				241B6F17142DBACB0043291E /* HototView.xib in Resources */,
+				241B6F19142DC2920043291E /* data in Resources */,
+				241B6F1E142DC9C00043291E /* hotot.icns in Resources */,
+				24253238142EB56C0041A5A9 /* TweetWindow.xib in Resources */,
+				24B965881436B9E6009C90CF /* Databases.db in Resources */,
+				248CF5CF143F2CFB0019DBAE /* dsa_pub.pem in Resources */,
+				2418AFED144AF54500926156 /* HUDImage.xib in Resources */,
+				2418AFEF144B0AC600926156 /* loading.gif in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		241B6EE6142DB6D00043291E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				241B6EFB142DB6D00043291E /* main.m in Sources */,
+				241B6F02142DB6D00043291E /* AppDelegate.m in Sources */,
+				241B6F10142DB8280043291E /* HototWindowController.m in Sources */,
+				241B6F16142DBACB0043291E /* HototViewController.m in Sources */,
+				241B6F26142DCBCF0043291E /* TweetWindowController.m in Sources */,
+				2418AFEB144AF53400926156 /* HUDImageController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		241B6EF7142DB6D00043291E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				241B6EF8142DB6D00043291E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		241B6EFD142DB6D00043291E /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				241B6EFE142DB6D00043291E /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		241B6F03142DB6D10043291E /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				241B6F04142DB6D10043291E /* en */,
+			);
+			name = MainMenu.xib;
+			path = "Hotot-For-Mac";
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		241B6F06142DB6D10043291E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		241B6F07142DB6D10043291E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		241B6F09142DB6D10043291E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Hotot-For-Mac/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Hotot-For-Mac/Hotot-For-Mac-Prefix.pch";
+				INFOPLIST_FILE = "Hotot-For-Mac/Hotot-For-Mac-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		241B6F0A142DB6D10043291E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Hotot-For-Mac/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Hotot-For-Mac/Hotot-For-Mac-Prefix.pch";
+				INFOPLIST_FILE = "Hotot-For-Mac/Hotot-For-Mac-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		241B6EE4142DB6D00043291E /* Build configuration list for PBXProject "Hotot-For-Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				241B6F06142DB6D10043291E /* Debug */,
+				241B6F07142DB6D10043291E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		241B6F08142DB6D10043291E /* Build configuration list for PBXNativeTarget "Hotot-For-Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				241B6F09142DB6D10043291E /* Debug */,
+				241B6F0A142DB6D10043291E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 241B6EE1142DB6D00043291E /* Project object */;
+}
+
