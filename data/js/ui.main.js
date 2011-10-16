@@ -85,7 +85,7 @@ loadmore_home:
 function loadmore_home(self, success, fail) {
     var max_id = self.max_id;
     lib.twitterapi.get_home_timeline(
-        1, max_id, conf.vars.items_per_request, 
+        null, max_id, conf.vars.items_per_request, 
         success);
 },
 
@@ -99,7 +99,7 @@ function load_mentions(self, success, fail) {
 loadmore_mentions: 
 function loadmore_mentions(self, success, fail) {
     lib.twitterapi.get_mentions(
-        1, self.max_id, conf.vars.items_per_request, 
+        null, self.max_id, conf.vars.items_per_request, 
         success);
 },
 
@@ -117,10 +117,10 @@ function load_messages(self, success, fail) {
 loadmore_messages: 
 function loadmore_messages(self, success, fail) {
     lib.twitterapi.get_direct_messages(
-        1, self.max_id, conf.vars.items_per_request, 
+        null, self.max_id, conf.vars.items_per_request, 
         success);
     lib.twitterapi.get_sent_direct_messages(
-        1, self.max_id, conf.vars.items_per_request, 
+        null, self.max_id, conf.vars.items_per_request, 
         success);
 },
 
@@ -154,15 +154,18 @@ function load_tweet_success(self, json) {
     // notify
     if (ui.Main.views[self.name].use_notify) {
         var user = ''; var text = '';
+        var notify_count = 0
         for (var i = json.length - 1; json.length - 3 <= i && 0 <= i; i -= 1) {
             user = json[i].hasOwnProperty('user') ? json[i].user : json[i].sender;
+            if (user.screen_name == globals.myself.screen_name) 
+                continue;
             text = json[i].text;
-            hotot_notify(user.screen_name, text
-                , user.profile_image_url , 'content');
+            hotot_notify(user.screen_name, text, user.profile_image_url , 'content');
+            notify_count += 1;
         }
-        if (3 < ret) {
+        if (3 < notify_count) {
             hotot_notify("Update page " + self.name 
-                , "and " + (ret - 2) + " new items remained."
+                , "and " + (notify_count - 2) + " new items remained."
                 , null, 'count');
         }
         unread_alert(ret);

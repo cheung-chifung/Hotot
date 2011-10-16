@@ -17,47 +17,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#include "config.h"
 
-// Qt
-#include <QMainWindow>
-#include <QSystemTrayIcon>
-
-class TrayIconBackend;
-class KStatusNotifierItem;
-namespace Ui
-{
-class MainWindow;
-}
-
-class QWebView;
-class HototWebPage;
-
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-    void notification(QString type, QString title, QString message, QString image);
-    void triggerVisible();
-    void activate();
-    void unreadAlert(QString number);
-
-protected Q_SLOTS:
-    void loadFinished(bool ok);
-
-protected:
-    void initDatabases();
-    void closeEvent(QCloseEvent *evnet);
-
-private:
-    Ui::MainWindow *ui;
-    HototWebPage* m_page;
-    QWebView* m_webView;
-    QMenu* m_menu;
-    TrayIconBackend* m_tray;
-};
-
-#endif // MAINWINDOW_H
+#ifdef HAVE_KDE
+#   include <KLocalizedString>
+#else
+#   ifdef Q_OS_WIN32
+#       define i18n(x) tr(x)
+#   else
+#       include <libintl.h>
+#       define i18n(x) QString::fromUtf8(gettext(x))
+#   endif
+#endif

@@ -17,47 +17,59 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#include "common.h"
 
 // Qt
-#include <QMainWindow>
 #include <QSystemTrayIcon>
 
-class TrayIconBackend;
-class KStatusNotifierItem;
-namespace Ui
+// Hotot
+#include "qttraybackend.h"
+#include "mainwindow.h"
+
+QtTrayBackend::QtTrayBackend(MainWindow* parent):
+    TrayIconBackend(parent),
+    m_mainWindow(parent),
+    m_trayicon(new QSystemTrayIcon(this))
 {
-class MainWindow;
+    m_trayicon->setIcon(QIcon::fromTheme("hotot_qt", QIcon("share/hotot-qt/html/image/ic64_hotot_classics.png")));
+    m_trayicon->show();
+    connect(m_trayicon,
+            SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this,
+            SLOT(trayIconClicked(QSystemTrayIcon::ActivationReason)));
+    connect(m_trayicon,
+            SIGNAL(messageClicked()),
+            this,
+            SLOT(messageClicked()));
 }
 
-class QWebView;
-class HototWebPage;
-
-class MainWindow : public QMainWindow
+void QtTrayBackend::setContextMenu(QMenu* menu)
 {
-    Q_OBJECT
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-    void notification(QString type, QString title, QString message, QString image);
-    void triggerVisible();
-    void activate();
-    void unreadAlert(QString number);
+    m_trayicon->setContextMenu(menu);
+}
 
-protected Q_SLOTS:
-    void loadFinished(bool ok);
+void QtTrayBackend::showMessage(QString type, QString title, QString message, QString image)
+{
+    Q_UNUSED(type)
+    Q_UNUSED(image)
+    m_trayicon->showMessage(title, message);
+}
 
-protected:
-    void initDatabases();
-    void closeEvent(QCloseEvent *evnet);
+void QtTrayBackend::messageClicked()
+{
+    m_mainWindow->activate();
+}
 
-private:
-    Ui::MainWindow *ui;
-    HototWebPage* m_page;
-    QWebView* m_webView;
-    QMenu* m_menu;
-    TrayIconBackend* m_tray;
-};
+void QtTrayBackend::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
+{
+    if (reason == QSystemTrayIcon::Trigger)
+        m_mainWindow->triggerVisible();
+}
 
-#endif // MAINWINDOW_H
+void QtTrayBackend::unreadAlert(QString number)
+{
+    m_trayicon->setToolTip(i18n("%1 unread Messages").arg(number));
+}
+
+
+#include "qttraybackend.moc"

@@ -17,47 +17,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef QTTRAY_BACKEND_H
+#define QTTRAY_BACKEND_H
 
 // Qt
-#include <QMainWindow>
 #include <QSystemTrayIcon>
 
-class TrayIconBackend;
-class KStatusNotifierItem;
-namespace Ui
-{
-class MainWindow;
-}
+// Hotot
+#include "trayiconbackend.h"
 
-class QWebView;
-class HototWebPage;
-
-class MainWindow : public QMainWindow
+class QtTrayBackend : public TrayIconBackend
 {
     Q_OBJECT
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-    void notification(QString type, QString title, QString message, QString image);
-    void triggerVisible();
-    void activate();
-    void unreadAlert(QString number);
-
+    QtTrayBackend(MainWindow* parent = 0);
+    virtual void setContextMenu(QMenu* menu);
+    virtual void showMessage(QString type, QString title, QString message, QString image);
+    virtual void unreadAlert(QString number);
 protected Q_SLOTS:
-    void loadFinished(bool ok);
-
-protected:
-    void initDatabases();
-    void closeEvent(QCloseEvent *evnet);
-
+    void trayIconClicked(QSystemTrayIcon::ActivationReason reason);
+    void messageClicked();
 private:
-    Ui::MainWindow *ui;
-    HototWebPage* m_page;
-    QWebView* m_webView;
-    QMenu* m_menu;
-    TrayIconBackend* m_tray;
+    MainWindow* m_mainWindow;
+    QSystemTrayIcon* m_trayicon;
 };
 
-#endif // MAINWINDOW_H
+#endif

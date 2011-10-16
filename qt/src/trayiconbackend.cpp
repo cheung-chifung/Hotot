@@ -17,47 +17,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#include "trayiconbackend.h"
+#include "mainwindow.h"
 
-// Qt
-#include <QMainWindow>
-#include <QSystemTrayIcon>
-
-class TrayIconBackend;
-class KStatusNotifierItem;
-namespace Ui
+TrayIconBackend::TrayIconBackend(MainWindow* parent): QObject(parent)
 {
-class MainWindow;
+
 }
 
-class QWebView;
-class HototWebPage;
-
-class MainWindow : public QMainWindow
+void TrayIconBackend::setContextMenu(QMenu* menu)
 {
-    Q_OBJECT
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-    void notification(QString type, QString title, QString message, QString image);
-    void triggerVisible();
-    void activate();
-    void unreadAlert(QString number);
+    Q_UNUSED(menu)
+}
 
-protected Q_SLOTS:
-    void loadFinished(bool ok);
+void TrayIconBackend::showMessage(QString type, QString title, QString message, QString image)
+{
+    Q_UNUSED(type)
+    Q_UNUSED(image)
+    Q_UNUSED(title)
+    Q_UNUSED(message)
+}
 
-protected:
-    void initDatabases();
-    void closeEvent(QCloseEvent *evnet);
+void TrayIconBackend::unreadAlert(QString number)
+{
+    Q_UNUSED(number)
+}
 
-private:
-    Ui::MainWindow *ui;
-    HototWebPage* m_page;
-    QWebView* m_webView;
-    QMenu* m_menu;
-    TrayIconBackend* m_tray;
-};
 
-#endif // MAINWINDOW_H
+#include "trayiconbackend.moc"

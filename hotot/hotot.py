@@ -12,16 +12,30 @@ import config
 import agent
 import keybinder
 import utils
+import dbus
+import dbus.service 
+import threading
+import time
 
 try:
-    import indicate
+    import appindicator
 except ImportError:
     HAS_INDICATOR = False
 else:
     HAS_INDICATOR = True
 
+try:
+    import indicate
+except ImportError:
+    HAS_ME_MENU = False
+else:
+    HAS_ME_MENU = True
+
 if __import__('os').environ.get('DESKTOP_SESSION') in ('gnome-2d', 'classic-gnome'):
     HAS_INDICATOR = False
+    HAS_ME_MENU = False
+
+HAS_ME_MENU = False
 
 try: import i18n
 except: from gettext import gettext as _
@@ -32,17 +46,36 @@ try:
 except:
     pass
 
+HOTOT_DBUS_PATH = '/org/hotot/service'
+HOTOT_DBUS_NAME = 'org.hotot.service'
+
+class HototDbusService(dbus.service.Object):
+    def __init__(self, app):
+        bus_name = dbus.service.BusName(HOTOT_DBUS_NAME, bus=dbus.SessionBus())
+        dbus.service.Object.__init__(self, bus_name, HOTOT_DBUS_PATH)
+        self.app = app
+
+    @dbus.service.method(dbus_interface=HOTOT_DBUS_NAME, sender_keyword='sender')
+    def unread(self, sender=None):
+        return self.app.state['unread_count']
+
 class Hotot:
     def __init__(self):
         self.is_sign_in = False
         self.active_profile = 'default'
         self.protocol = ''
         self.build_gui()
+        self.insplashing = False
+        self.mm_indicators = {}
+        self.trayicon_pixbuf = [None, None]
+        self.state = {
+            'unread_count': 0
+        }
         if not HAS_INDICATOR:
             self.create_trayicon()
-        else:
-            self.create_indicator()
-            self.indicators = {}
+
+        if HAS_ME_MENU:
+            self.create_memenu()
 
     def build_gui(self):
         self.window = gtk.Window()
@@ -117,7 +150,7 @@ class Hotot:
         self.window.show()
         self.window.connect('delete-event', gtk.Widget.hide_on_delete)
 
-    def create_indicator(self):
+    def create_memenu(self):
         # Memssage Menu indicator
         self.mm = indicate.indicate_server_ref_default()
         self.mm.set_type('message.hotot')
@@ -126,7 +159,7 @@ class Hotot:
         self.mm.show()
 
     def unread_alert(self, subtype, sender, body="", count="0"): 
-        if HAS_INDICATOR:
+        if HAS_ME_MENU:
             try:
                 idr = indicate.Indicator()
             except:
@@ -134,20 +167,51 @@ class Hotot:
             idr.set_property('subtype', subtype)
             idr.set_property('sender', sender)
             idr.set_property('body', body)
-            # idr.set_property("icon", None)
-            idr.set_property('draw-attention', 'true' if count != '0' else 'false')
+            idr.set_property('draw-attention', 'true' if count > 0 else 'false')
             idr.set_property('count', count)
             idr.connect('user-display', self.on_mm_activate)
             idr.show()
-            self.indicators[subtype] = idr
+            self.mm_indicators[subtype] = idr
+
+        if count > 0:
+            self.start_splash_icon()
+        else:
+            self.stop_splash_icon()
+        
+        if not HAS_INDICATOR:
+            self.trayicon.set_tooltip("Hotot: %d unread tweets/messages." % count if count > 0 else _("Hotot: Click to Active."))
+        self.state['unread_count'] = count
+
+    def start_splash_icon(self):
+        if self.insplashing:
+            return
+        def splash_proc():
+            flag = 0
+            while self.insplashing:
+                if HAS_INDICATOR:
+                    self.indicator.set_status(appindicator.STATUS_ATTENTION if flag else appindicator.STATUS_ACTIVE)
+                else:
+                    self.trayicon.set_from_pixbuf(self.trayicon_pixbuf[flag])
+                flag ^= 1
+                time.sleep(1)
+            if HAS_INDICATOR:
+                self.indicator.set_status(appindicator.STATUS_ACTIVE)
+            else:
+                self.trayicon.set_from_pixbuf(self.trayicon_pixbuf[0])
+        self.insplashing = True
+        th = threading.Thread(target = splash_proc)
+        th.start()
+
+    def stop_splash_icon(self):
+        self.insplashing = False
 
     def on_mm_activate(self, idr, arg1):
-        if HAS_INDICATOR:
+        if HAS_ME_MENU:
             subtype = idr.get_property('subtype')
             idr.set_property('draw-attention', 'false')
             self.window.present()
-            if subtype in self.indicators:
-                del self.indicators[subtype]
+            if subtype in self.mm_indicators:
+                del self.mm_indicators[subtype]
             
     def on_mm_server_activate(self, serv, arg1):
         self.window.present()
@@ -187,6 +251,7 @@ class Hotot:
         self.quit()
 
     def quit(self, *args):
+        self.stop_splash_icon()
         gtk.gdk.threads_leave()
         self.window.destroy()
         gtk.main_quit()
@@ -238,8 +303,11 @@ class Hotot:
         self.trayicon.connect('activate', self.on_trayicon_activate)
         self.trayicon.connect('popup-menu', self.on_trayicon_popup_menu)
         self.trayicon.set_tooltip(_("Hotot: Click to Active."))
-        self.trayicon.set_from_file(
+        self.trayicon_pixbuf[0] = gtk.gdk.pixbuf_new_from_file(
             utils.get_ui_object('image/ic24_hotot_mono_light.svg'))
+        self.trayicon_pixbuf[1] = gtk.gdk.pixbuf_new_from_file(
+            utils.get_ui_object('image/ic24_hotot_mono_dark.svg'))
+        self.trayicon.set_from_pixbuf(self.trayicon_pixbuf[0])
         self.trayicon.set_visible(True)
 
     def on_trayicon_activate(self, icon):
@@ -249,6 +317,7 @@ class Hotot:
         if self.window.is_active():
             self.window.hide()
         else:
+            self.stop_splash_icon()
             self.window.present()
 
     def on_trayicon_popup_menu(self, icon, button, activate_time):
@@ -286,7 +355,19 @@ def main():
     app = Hotot()
     agent.app = app
     if HAS_INDICATOR:
-        pass
+        indicator = appindicator.Indicator('hotot',
+                                            'hotot',
+                                            appindicator.CATEGORY_COMMUNICATIONS)
+        indicator.set_status(appindicator.STATUS_ACTIVE)
+        indicator.set_icon(utils.get_ui_object('image/ic24_hotot_mono_light.svg'))
+        indicator.set_attention_icon(utils.get_ui_object('image/ic24_hotot_mono_dark.svg'))
+        indicator.set_menu(app.menu_tray)
+        app.indicator = indicator
+
+    from dbus.mainloop.glib import DBusGMainLoop
+    DBusGMainLoop(set_as_default=True)
+    HDService = HototDbusService(app)
+
     gtk.gdk.threads_enter()
     gtk.main()
     gtk.gdk.threads_leave()
