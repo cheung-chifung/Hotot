@@ -60,46 +60,6 @@
     
 }
 
-
-- (void) showHUDImage:(NSURL *)imageURL {
-    dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^(void){
-        NSImage *image = [[NSImage alloc] initWithContentsOfURL:imageURL];
-        dispatch_async( dispatch_get_main_queue(), ^(void){
-            if (image) {
-                NSInteger width;
-                NSInteger height;
-                if ( (image.size.width/image.size.height) <= (600/500) ) {
-                    width  = image.size.width <= 600 ? image.size.width : 600;
-                    height = width * (image.size.height/image.size.width);
-                } else {
-                    height = image.size.height <= 500 ? image.size.height : 500;
-                    width  = height * (image.size.width/image.size.height); 
-                }
-                
-                NSPanel *hudWindow = [[NSPanel alloc]
-                                      initWithContentRect:NSMakeRect(0, 0, width+20, height+20) 
-                                      styleMask:NSUtilityWindowMask|NSTitledWindowMask|NSHUDWindowMask|NSClosableWindowMask 
-                                      backing:NSBackingStoreRetained
-                                      defer:NO];
-                
-                
-                NSImageView *imageView = [[NSImageView alloc] initWithFrame:CGRectMake(10, 10, width, height)];
-                [imageView setImage:image];
-                [imageView setAutoresizesSubviews:YES];
-                [[hudWindow contentView] addSubview:imageView];
-                [hudWindow center];
-                
-                [hudWindow makeKeyAndOrderFront:nil];
-                
-                [image release];
-                [imageView release];
-            }
-        });
-    });
-    
-}
-
-
 - (Boolean)on_hotot_action:(NSString *)message {
     if ([message length]>6) {
         NSString *command = [message substringFromIndex:6];
@@ -206,7 +166,7 @@
                     [ext isEqualToString:@"bmp"]  ||
                     [ext isEqualToString:@"tiff"] ||
                     [ext isEqualToString:@"png"]  ){
-            [self showHUDImage:[request URL]];
+            [[NSApp delegate] showHUDImage:[request URL]];
         } else {
             [[NSWorkspace sharedWorkspace] openURL:[request URL]];
             return TRUE;

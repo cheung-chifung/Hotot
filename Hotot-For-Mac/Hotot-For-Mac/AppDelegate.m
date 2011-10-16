@@ -49,6 +49,10 @@
     [NSApp endSheet:[tweetWindowController window]];
 }
 
+- (void)showHUDImage:(NSURL *)imageURL {
+    [hudImageController showImageWithURL:imageURL];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     [self setupDatabaseDirectory];
     
@@ -58,6 +62,9 @@
     }
     if (tweetWindowController == NULL) {
         tweetWindowController = [[TweetWindowController alloc] initWithWindowNibName:@"TweetWindow"];
+    }
+    if (hudImageController == NULL) {
+        hudImageController = [[HUDImageController alloc] initWithWindowNibName:@"HUDImage"];
     }
 }
 

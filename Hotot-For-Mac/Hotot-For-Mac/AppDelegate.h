@@ -9,12 +9,14 @@
 #import <Cocoa/Cocoa.h>
 #import "HototWindowController.h"
 #import "TweetWindowController.h"
+#import "HUDImageController.h"
 
 #import "hotot.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
     HototWindowController *hototWindowController;
     TweetWindowController *tweetWindowController;
+    HUDImageController *hudImageController;
     HototStatus hototStatus;
 }
 

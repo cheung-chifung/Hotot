@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2418AFEB144AF53400926156 /* HUDImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2418AFEA144AF53400926156 /* HUDImageController.m */; };
+		2418AFED144AF54500926156 /* HUDImage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2418AFEC144AF54500926156 /* HUDImage.xib */; };
+		2418AFEF144B0AC600926156 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2418AFEE144B0AC600926156 /* loading.gif */; };
 		241B6EEF142DB6D00043291E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 241B6EEE142DB6D00043291E /* Cocoa.framework */; };
 		241B6EF9142DB6D00043291E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 241B6EF7142DB6D00043291E /* InfoPlist.strings */; };
 		241B6EFB142DB6D00043291E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 241B6EFA142DB6D00043291E /* main.m */; };
@@ -45,6 +48,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2418AFE9144AF53400926156 /* HUDImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDImageController.h; sourceTree = "<group>"; };
+		2418AFEA144AF53400926156 /* HUDImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUDImageController.m; sourceTree = "<group>"; };
+		2418AFEC144AF54500926156 /* HUDImage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HUDImage.xib; path = "Hotot-For-Mac/HUDImage.xib"; sourceTree = "<group>"; };
+		2418AFEE144B0AC600926156 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = loading.gif; path = Resources/loading.gif; sourceTree = "<group>"; };
 		241B6EEA142DB6D00043291E /* Hotot-For-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hotot-For-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		241B6EEE142DB6D00043291E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		241B6EF1142DB6D00043291E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -139,14 +146,16 @@
 			children = (
 				243C571A143FD6A7009A1D4A /* hotot.h */,
 				241B6EF5142DB6D00043291E /* Supporting Files */,
-				241B6F00142DB6D00043291E /* AppDelegate.h */,
 				241B6F01142DB6D00043291E /* AppDelegate.m */,
+				241B6F00142DB6D00043291E /* AppDelegate.h */,
 				241B6F0E142DB8280043291E /* HototWindowController.h */,
 				241B6F0F142DB8280043291E /* HototWindowController.m */,
 				241B6F13142DBACB0043291E /* HototViewController.h */,
 				241B6F14142DBACB0043291E /* HototViewController.m */,
 				241B6F24142DCBCF0043291E /* TweetWindowController.h */,
 				241B6F25142DCBCF0043291E /* TweetWindowController.m */,
+				2418AFE9144AF53400926156 /* HUDImageController.h */,
+				2418AFEA144AF53400926156 /* HUDImageController.m */,
 			);
 			path = "Hotot-For-Mac";
 			sourceTree = "<group>";
@@ -166,6 +175,8 @@
 		241B6F0B142DB7A40043291E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2418AFEE144B0AC600926156 /* loading.gif */,
+				2418AFEC144AF54500926156 /* HUDImage.xib */,
 				248CF5CE143F2CFB0019DBAE /* dsa_pub.pem */,
 				24B965871436B9E6009C90CF /* Databases.db */,
 				24253237142EB56C0041A5A9 /* TweetWindow.xib */,
@@ -202,6 +213,9 @@
 /* Begin PBXProject section */
 		241B6EE1142DB6D00043291E /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 241B6EE4142DB6D00043291E /* Build configuration list for PBXProject "Hotot-For-Mac" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -234,6 +248,8 @@
 				24253238142EB56C0041A5A9 /* TweetWindow.xib in Resources */,
 				24B965881436B9E6009C90CF /* Databases.db in Resources */,
 				248CF5CF143F2CFB0019DBAE /* dsa_pub.pem in Resources */,
+				2418AFED144AF54500926156 /* HUDImage.xib in Resources */,
+				2418AFEF144B0AC600926156 /* loading.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,6 +265,7 @@
 				241B6F10142DB8280043291E /* HototWindowController.m in Sources */,
 				241B6F16142DBACB0043291E /* HototViewController.m in Sources */,
 				241B6F26142DCBCF0043291E /* TweetWindowController.m in Sources */,
+				2418AFEB144AF53400926156 /* HUDImageController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
