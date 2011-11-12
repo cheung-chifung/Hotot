@@ -3,10 +3,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Home | Hotot</title>
-    <link rel="stylesheet" href="css/hotot.widget.css" type="text/css" media="screen" /> 
-    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" /> 
-    <link id="hotot_theme" rel="stylesheet" href="theme/New Hope/style.css" type="text/css" media="screen" /> 
-    <link id="effects_level" rel="stylesheet" href="css/effects_1.css" type="text/css" media="screen" /> 
+    <link rel="stylesheet" href="css/hotot.widget.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+    <link id="hotot_theme" rel="stylesheet" href="theme/New Hope/style.css" type="text/css" media="screen" />
+    <link id="effects_level" rel="stylesheet" href="css/effects_1.css" type="text/css" media="screen" />
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jquery.layout.js"></script>
     <script type="text/javascript" src="js/base64.js"></script>
@@ -14,14 +14,14 @@
     <script type="text/javascript" src="js/lib.network.js"></script>
     <script type="text/javascript" src="js/lib.twitterapi.js"></script>
     <script type="text/javascript" src="js/js-oauth.js"></script>
-    
+
     <script type="text/javascript" src="js/widget.button.js"></script>
     <script type="text/javascript" src="js/widget.radio_group.js"></script>
     <script type="text/javascript" src="js/widget.dialog.js"></script>
     <script type="text/javascript" src="js/widget.bubble.js"></script>
     <script type="text/javascript" src="js/widget.listview.js"></script>
     <script type="text/javascript" src="js/widget.autocomplete.js"></script>
-    
+
     <script type="text/javascript" src="js/hotkey.js"></script>
     <script type="text/javascript" src="js/util.js"></script>
     <script type="text/javascript" src="js/console.js"></script>
@@ -60,718 +60,14 @@
     <script type="text/javascript" src="js/ui.finder.js"></script>
     <script type="text/javascript" src="js/ui.action_menu.js"></script>
     <script type="text/javascript" src="js/ui.context_menu.js"></script>
-    
+
+    <script type="text/javascript" src="js/hotot.js"></script>
     <script type="text/javascript" src="ext/ext.js"></script>
-<script type="text/javascript">
-var layout_opts = {
-        closable:                   true        
-    ,   resizable:                  true        
-    ,   slidable:                   true
-    ,   enableCursorHotkey:         false
-    ,   paneClass:                  'ui-layout-pane'
-    ,   north__slidable:            false
-    ,   north__closable:            true
-    ,   north__size:                70
-    ,   north__showOverflowOnHover: true
-    ,   north__spacing_open :       0
-    ,   north__spacing_closed:      0
-    ,   north__initClosed:          true
-    ,   east__spacing_open:         0
-    ,   east__spacing_closed:       0
-    ,   east__size:                 0
-    ,   east__initClosed:           true
-    ,   east__slidable: true
-    ,   east__fxSettings_open:      { easing: "easeOutBounce" }
-    ,   south__size:                0
-    ,   south__spacing_open:        0
-    ,   south__spacing_closed:      0
-    ,   south__initClosed:          true
-    ,   south__showOverflowOnHover: true
-    ,   north__paneSelector:        '#header'
-    ,   east__paneSelector:         '#aside'
-    ,   center__paneSelector:       '#center'
-    ,   south__paneSelector:        '#bottom'
-};
-
-function change_effects_level(level) {
-    $('#effects_level').attr('href', 'css/effects_' + level + '.css');
-}
-
-function change_theme(theme_name, theme_path) {
-    $('#hotot_theme').attr('href', theme_path + '/style.css');
-    $.getJSON(theme_path + '/info.json',
-    function (hotot_theme_info) {
-        $('#prefs_theme_name').text(hotot_theme_info.name);
-        $('#prefs_theme_author').text(hotot_theme_info.author);
-        $('#prefs_theme_web').text(hotot_theme_info.web)
-            .attr('href', hotot_theme_info.web);
-        $('#prefs_theme_desc').text(hotot_theme_info.description);
-        $('#prefs_theme_preview').attr('src', theme_path+'/preview.png');
-    });
-}
-
-function update_tweet_block_width() {
-    var view_width = $(window).width() - $('#aside').width();
-    ui.Slider.column_num = parseInt(view_width / 400) || 1;
-    if (ui.Slider.tweet_blocks.length < ui.Slider.column_num) {
-        ui.Slider.column_num = ui.Slider.tweet_blocks.length;
-    }
-    globals.tweet_block_width = view_width / ui.Slider.column_num;
-    if (view_width > 1280) {
-        globals.tweet_block_width -= 1;
-    }
-    $('.view_title:gt(ui.Slider.column_num)').hide();
-    $('.tweetview').width(globals.tweet_block_width);
-    $('.view_title').width(globals.tweet_block_width - 1);
-    
-    // no_stick indicators
-    var idrs = $('#indicator_btns').children('.no_stick');
-    $('#indicator_btns').children('.no_stick:eq(0)')
-        .css('margin-left', (($(window).width()-(idrs.length+1) * 40)/2) + 'px');
-
-    // adjust width of compose button
-    if (ui.Slider.column_num == 1) {
-        $('#indicator_compose_btn').removeClass('with_label');
-    } else {
-        $('#indicator_compose_btn').addClass('with_label');
-    }
-
-    // adjust width of compose box
-    var status_box_w = $(window).width()*0.6;
-    if (status_box_w < 550) {       // 550, max-width of #status_box
-        if (status_box_w < 400) {   // 400, min-width of #status_box
-            status_box_w = 400;
-        }
-    } else {
-        status_box_w = 550;
-    }
-    $('#status_box').width(status_box_w);
-}
-
-function hotot_action(uri) {
-    if (util.is_native_platform()) {
-        alert('hotot:' + uri);
-    } 
-}
-
-function quit() {
-    conf.save_settings(function () {
-        conf.save_prefs(conf.current_name, function(){
-            if (conf.vars.platform == 'Chrome') {
-                chrome.tabs.getCurrent(function (tab) {
-                    chrome.tabs.remove(tab.id);    
-                });
-            } else {
-                hotot_action('system/quit');
-            }
-        });
-    });
-}
-
-function open_people(screen_name, additional_opts) {
-    // @TODO check this user if exists or not
-    toast.set('Lookup @'+screen_name+'... ').show();
-    var name = 'people_'+screen_name;
-    var title = '@' + screen_name + '\'s Profile';
-    ui.Slider.add(name
-        , {title: title, icon:'image/ic_people.png'}
-        , $.extend({   'type': 'people', 'title': title
-            , 'load': ui.PeopleView.load_timeline
-            , 'loadmore': ui.PeopleView.loadmore_timeline
-            , 'load_success': ui.Main.load_tweet_success
-            , 'load_fail': null
-            , 'loadmore_success': ui.Main.loadmore_tweet_success
-            , 'loadmore_fail': null
-            , 'former': ui.Template.form_tweet
-            , 'init': ui.PeopleView.init_view
-            , 'destroy': ui.PeopleView.destroy_view
-            , 'header_html': ui.Template.people_vcard_t
-            , 'method': 'poll'
-            , 'interval': 120
-            , 'item_type': 'id'
-            , 'is_trim': true
-            , 'screen_name': screen_name
-        }, additional_opts));
-    ui.Main.views[name].load();
-    ui.Slider.slide_to(name);
-}
-
-function open_list(screen_name, slug, additional_opts) {
-    // @TODO check this list if exists or not
-    toast.set('Lookup @'+screen_name+'/'+slug+'... ').show();
-    var name = 'list_'+screen_name+'_'+slug;
-    var title = 'List @' + screen_name + '/'+slug;
-    ui.Slider.add(name
-        , {title: title, icon:'image/ic_people.png'}
-        , $.extend({   'type': 'list', 'title': title
-            , 'load': ui.ListView.load_timeline
-            , 'loadmore': ui.ListView.loadmore_timeline
-            , 'load_success': ui.Main.load_tweet_success
-            , 'load_fail': null
-            , 'loadmore_success': ui.Main.loadmore_tweet_success
-            , 'loadmore_fail': null
-            , 'former': ui.Template.form_tweet
-            , 'init': ui.ListView.init_view
-            , 'destroy': ui.ListView.destroy_view
-            , 'header_html': ui.Template.list_vcard_t
-            , 'method': 'poll'
-            , 'interval': 120
-            , 'item_type': 'id'
-            , 'is_trim': true
-            , 'screen_name': screen_name
-            , 'slug': slug
-        }, additional_opts));
-    ui.Main.views[name].load();
-    ui.Slider.slide_to(name);
-}
-
-function reply_tweet(tid, text) {
-     
-}
-
-function send_tweet(text) {
-    
-}
-
-function send_dm(screen_name) {
-    
-}
-
-function navigate_action(uri) {
-    if (util.is_native_platform()) {
-        window.location.href = uri;
-    } else {
-        window.open(uri); 
-    }
-}
-
-function hotot_notify(title, summary, image, type) {
-    notification.push(title, summary, image, type);
-}
-
-function hotot_log(label, content) {
-    if (conf.settings.use_verbose_mode) {
-        if (util.is_native_platform()) {
-            hotot_action('action/log/' + encodeURIComponent(label) 
-                + '/' + encodeURIComponent(content));
-        } else if (conf.vars.platform == 'Chrome') {
-            console.log('[' + label + '] ' + content);
-        } else {
-            util.console.out('[' + label + '] ' + content);
-        }
-    }
-}
-function unread_alert(count) {
-    var sp = 0;
-    var proc = function (){
-        sp ^= 1;
-        document.title = '('+(sp?globals.unread_count:' ! ')+')' + _('hotot') + ' | ' + conf.current_name;
-        globals.unread_alert_timer = setTimeout(proc, 2000);
-    }
-    clearTimeout(globals.unread_alert_timer);
-    if (count == 0) {
-        globals.unread_count = 0;
-        document.title = _('hotot') + ' | ' + conf.current_name;
-        if (util.is_native_platform()) {
-            hotot_action('system/unread_alert/0');
-        }
-    } else {
-        globals.unread_count += count;
-        if (util.is_native_platform()) {
-            hotot_action('system/unread_alert/'+globals.unread_count);
-        } else {
-            proc();
-        }
-    }
-}
-
-/* 
-    = startup process =
-    - document.ready -> init() -> db.init() -> daemon.init()
-        -> conf.init() -> ext.init() -> set loading flags
-    - native web container init -> on_load_finish() -> wait for loading flags being setted -> ext.init_exts() -> finish
-*/
-
-function init(callback) {
-    hotot_log('init', 'init()');
-    var procs = [];
-    procs.push(function() {
-        db.init(function () {
-            $(window).dequeue('_page_init');
-        });    
-    });
-    procs.push(function() {
-        daemon.init();
-        $(window).dequeue('_page_init');
-    });
-    procs.push(function() {
-        conf.init(function () {
-            $(window).dequeue('_page_init');
-        });    
-    });
-    procs.push(function() {
-        ext.init();
-        $(window).dequeue('_page_init');
-    });
-    procs.push(function() {
-        on_load_finish();
-        $(window).dequeue('_page_init');
-    });
-
-    $(window).queue('_page_init', procs);
-    $(window).dequeue('_page_init');
-}
-
-function init_dialogs() {
-    hotot_log('init', 'init_dialogs()');
-    globals.oauth_dialog = new widget.Dialog('#oauth_dlg');
-    globals.oauth_dialog.resize(350, 350);
-    globals.oauth_dialog.place(widget.DialogManager.CENTER);
-    globals.oauth_dialog.create();
-
-    globals.profile_dialog = new widget.Dialog('#profile_dlg');
-    globals.profile_dialog.resize(500, 400);
-    globals.profile_dialog.place(widget.DialogManager.CENTER);
-    globals.profile_dialog.create();
-
-    globals.list_attr_dialog = new widget.Dialog('#list_attr_dlg');
-    globals.list_attr_dialog.resize(500, 330);
-    globals.list_attr_dialog.place(widget.DialogManager.CENTER);
-    globals.list_attr_dialog.create();
-
-    globals.add_to_list_dialog = new widget.Dialog('#add_to_list_dlg');
-    globals.add_to_list_dialog.resize(400, 260);
-    globals.add_to_list_dialog.place(widget.DialogManager.CENTER);
-    globals.add_to_list_dialog.create();
-
-    globals.prefs_dialog = new widget.Dialog('#prefs_dlg');
-    globals.prefs_dialog.resize(500, 400);
-    globals.prefs_dialog.place(widget.DialogManager.CENTER);
-    globals.prefs_dialog.create();
-
-    globals.exts_dialog = new widget.Dialog('#exts_dlg');
-    globals.exts_dialog.resize(500, 400);
-    globals.exts_dialog.place(widget.DialogManager.CENTER);
-    globals.exts_dialog.create();
-
-    globals.imageuploader_dialog = new widget.Dialog('#imageuploader_dlg');
-    globals.imageuploader_dialog.resize(600, 600);
-    globals.imageuploader_dialog.place(widget.DialogManager.CENTER);
-    globals.imageuploader_dialog.create();
-
-    globals.error_dialog= new widget.Dialog('#error_dlg');
-    globals.error_dialog.resize(500, 400);
-    globals.error_dialog.place(widget.DialogManager.CENTER);
-    globals.error_dialog.create();
-
-    globals.about_dialog = new widget.Dialog('#about_dlg');
-    globals.about_dialog.resize(500, 400);
-    globals.about_dialog.place(widget.DialogManager.CENTER);
-    globals.about_dialog.create();
-
-    globals.kismet_dialog = new widget.Dialog('#kismet_dlg');
-    globals.kismet_dialog.resize(600, 500);
-    globals.kismet_dialog.place(widget.DialogManager.CENTER);
-    globals.kismet_dialog.create();
-}
-
-function init_ui() {
-    util.console.init();
-    init_hotkey();
-    kismet.init();
-    notification.init();
-    toast.init();
-    ui.Slider.init();
-    ui.Template.init();
-    ui.Header.init();
-    ui.StatusBox.init();
-    ui.Main.init();
-    ui.Welcome.init();
-    ui.HomeTabs.init();
-    ui.MentionTabs.init();
-    ui.RetweetView.init();
-    ui.DMTabs.init();
-    ui.PeopleView.init();
-    ui.ListView.init();
-    ui.SearchView.init();
-    ui.PinDlg.init();
-    ui.PrefsDlg.init();
-    ui.ProfileDlg.init();
-    ui.ListAttrDlg.init();
-    ui.KismetDlg.init();
-    ui.ExtsDlg.init();
-    ui.ErrorDlg.init();
-    ui.ImageUploader.init();
-    ui.AboutDlg.init();
-    ui.Finder.init();
-    ui.ActionMenu.init();
-    ui.ContextMenu.init();
-    init_dialogs();
-
-    globals.ratelimit_bubble = new widget.Bubble('#ratelimit_bubble', '#btn_my_profile');
-    globals.ratelimit_bubble.create();
-    globals.ratelimit_bubble.set_content("0");
-}
-
-function init_hotkey() {
-    hotkey.init();
-    // Application
-    // 'r' to reload timeline
-    var ig = hotkey.calculate(71);
-    hotkey.register(hotkey.calculate(82),function () {
-        toast.set('Loading Tweets...').show(-1);
-        daemon.update_all();
-    });
-    // 'c' to compose
-    hotkey.register(hotkey.calculate(67), 
-        function () {ui.StatusBox.open();});
-    // Navigation
-    // 'h' to slide to prev tab
-    hotkey.register(hotkey.calculate(72), ui.Slider.slide_to_prev);
-    // 'l' to slide to next tab
-    hotkey.register(hotkey.calculate(76), ui.Slider.slide_to_next);
-    // 'k' to move to prev tweet
-    hotkey.register(hotkey.calculate(75), function () {
-        ui.Main.move_to_tweet("prev");
-    });
-    // 'j' to move to next tweet
-    hotkey.register(hotkey.calculate(74), function () {
-        ui.Main.move_to_tweet("next");
-    });
-    // 'g' then 'g' to move to top
-    hotkey.register([ig ,ig], function () {
-        ui.Main.move_to_tweet("top");
-    });
-    // shift + 'g' to move to bottom
-    hotkey.register(hotkey.calculate(71, hotkey.shiftKey), function () {
-        ui.Main.move_to_tweet("bottom");
-    });
-    // 'g' then 'h' to go home
-    hotkey.register([ig,hotkey.calculate(72)], function () {
-        ui.Slider.slide_to('home');
-    });
-    // 'g' then 'm' to go mentions
-    hotkey.register([ig,hotkey.calculate(77)], function () {
-        ui.Slider.slide_to('mentions');
-    });
-    // 'g' then 'd' to go messages
-    hotkey.register([ig,hotkey.calculate(68)], function () {
-        ui.Slider.slide_to('messages');
-    });
-    // 'g' then 'r' to go retweets
-    hotkey.register([ig,hotkey.calculate(82)], function () {
-        ui.Slider.slide_to('retweets');
-    });
-    // 'g' then 's' to go search
-    hotkey.register([ig,hotkey.calculate(83)], function () {
-        ui.Slider.slide_to('search');
-    });
-
-    // @TODO Actions, prefix 'a'
-    var ia = hotkey.calculate(65);
-    // 'a' then 'r' to reply
-    hotkey.register([ia, hotkey.calculate(82)], function() {
-        if (ui.Main.selected_tweet_id != null) {
-            var current = $(ui.Main.selected_tweet_id);
-            if (current.length != 0) {
-                ui.Main.on_reply_click(null, ui.Main.selected_tweet_id, null); 
-            }
-        }
-    });
-    // 'a' then 'q' to quote
-    hotkey.register([ia, hotkey.calculate(81)], function() {
-        if (ui.Main.selected_tweet_id != null) {
-            var current = $(ui.Main.selected_tweet_id);
-            if (current.length != 0) {
-                ui.Main.on_rt_click(null, ui.Main.selected_tweet_id, null); 
-            }
-        }
-    });
-    // 'a' then 's' to favorite/un-fav
-    hotkey.register([ia, hotkey.calculate(83)], function() {
-        if (ui.Main.selected_tweet_id != null) {
-            var current = $(ui.Main.selected_tweet_id);
-            if (current.length != 0) {
-                ui.Main.on_fav_click(this, ui.Main.active_tweet_id, event);
-            }
-        }
-    });
-
-    // 'a' then 'a' to reply all
-    hotkey.register([ia, ia], function() {
-        if (ui.Main.selected_tweet_id != null) {
-            var current = $(ui.Main.selected_tweet_id);
-            if (current.length != 0) {
-                ui.Main.on_reply_all_click(null, ui.Main.selected_tweet_id, null); 
-            }
-        }
-    });
-
-    // 'a' then <Shift>+'r' to retweet/undo-retweet
-    hotkey.register([ia, hotkey.calculate(82, hotkey.shiftKey)], function() {
-        if (ui.Main.selected_tweet_id != null) {
-            var current = $(ui.Main.selected_tweet_id);
-            if (current.length != 0) {
-                ui.Main.on_retweet_click(this, ui.Main.active_tweet_id, ev);
-            }
-        }
-    });
-    // 'a' then 'd' to delete
-    hotkey.register([ia, hotkey.calculate(68)], function() {
-        if (ui.Main.selected_tweet_id != null) {
-            var current = $(ui.Main.selected_tweet_id);
-            if (current.length != 0) {
-                ui.Main.on_del_click(this, ui.Main.active_tweet_id, event);
-            }
-        }
-    });
-    // 'a' then 'm' to send msg 
-    hotkey.register([ia, hotkey.calculate(77)], function() {
-        if (ui.Main.selected_tweet_id != null) {
-            var current = $(ui.Main.selected_tweet_id);
-            if (current.length != 0) {
-                ui.Main.on_dm_click(this, ui.Main.active_tweet_id, event);
-            }
-        }
-    });
-
-    // 'z' then 'o' to expand
-    var iz = hotkey.calculate(90);
-    hotkey.register([iz, hotkey.calculate(79)], function () {
-        if (ui.Main.selected_tweet_id != null) {
-            var btn = $(ui.Main.selected_tweet_id)
-                .find('.btn_tweet_thread:first');
-            btn.removeClass('expand');
-            btn.click();
-        }
-    });
-    // 'z' then 'c' to expand
-    hotkey.register([iz, hotkey.calculate(67)], function () {
-        if (ui.Main.selected_tweet_id != null) {
-            var btn = $(ui.Main.selected_tweet_id)
-                .find('.btn_tweet_thread:first')
-            btn.addClass('expand');
-            btn.click();
-        }
-    });
-    // shift + '9' to toggle
-    hotkey.register(hotkey.calculate(57, hotkey.shiftKey), ui.Sidebar.toggle);
-    // :)
-    hotkey.register([hotkey.calculate(51, hotkey.shiftKey)
-        , hotkey.calculate(50, hotkey.shiftKey)
-        , hotkey.calculate(49, hotkey.shiftKey)
-        , hotkey.calculate(54, hotkey.shiftKey)
-        , hotkey.calculate(55, hotkey.shiftKey)], function(){
-            $('.profile_img_wrapper').css('background-image', 'url(image/ic48_profile_image.png)');
-        }); 
-}
-
-function overlay_variables(vars) {        
-    conf.vars.platform = vars.platform;
-    hotot_log('init', 'overlay_variables()');
-    if (util.is_native_platform()) {
-        // native variables 
-        conf.vars.conf_dir = vars.conf_dir;
-        conf.vars.cache_dir = vars.cache_dir;
-        conf.vars.avatar_cache_dir = vars.avatar_cache_dir;
-        conf.settings.font_list = vars.extra_fonts;
-        conf.vars.extra_themes = vars.extra_themes
-        ext.extras = vars.extra_exts;
-        i18n.locale = vars.locale;
-        globals.load_flags = 1;
-    }
-}
-
-function on_load_finish() {
-    // if native_platform
-    //      wait until the webview is ready.
-    if (util.is_native_platform() && globals.load_flags == 0) {
-        setTimeout(on_load_finish, 1000);
-    } else {
-        hotot_log('init', 'on_load_finish()');
-        globals.load_flags = 1;
-        // 1. load builtins & extra extensions
-        var procs = [];
-        procs.push(function () {
-            hotot_log('init', 'on_load_finish() -> ext.load_builtin_exts();');
-            ext.load_builtin_exts(function () {
-                $(window).dequeue('_on_load_finish');
-            });
-        });
-        procs.push(function() {
-            hotot_log('init', 'on_load_finish() -> ext.load_exts();');
-            ext.load_exts('extra', ext.extras, function () {
-                $(window).dequeue('_on_load_finish');
-            });
-        });
-        // init enabled extensions
-        procs.push(function () {
-            hotot_log('init', 'on_load_finish() -> ext.init_exts();');
-            ext.init_exts();
-            $(window).dequeue('_on_load_finish');
-        });
-        
-        // 2. push settings to native platform
-        if (util.is_native_platform()) {
-            procs.push(function () {    
-                hotot_log('init', 'on_load_finish() -> push settings');
-                hotot_action('system/load_settings/' 
-                    + encodeURIComponent(JSON.stringify(conf.settings)))
-                globals.load_flags = 2;
-                $(window).dequeue('_on_load_finish');
-            });
-        } else {
-            procs.push(function () {    
-                hotot_log('init', 'on_load_finish() -> push settings');
-                $(window).width(conf.settings.size_w);
-                $(window).height(conf.settings.size_h);
-                globals.load_flags = 2;    
-                $(window).dequeue('_on_load_finish');
-            }); 
-        }
-        // 3. i18n
-        procs.push(function() {
-            hotot_log('init', 'on_load_finish() -> i18n.init()');
-            i18n.init(function () {
-                $(window).dequeue('_on_load_finish');
-            });
-        });
-        // 4. init_ui();
-        procs.push(function() {
-            hotot_log('init', 'on_load_finish() -> init_ui()');
-            init_ui();
-            $(window).dequeue('_on_load_finish');
-        });
-        // 5. finish, hide loading prompt
-        procs.push(function () {
-            $('#welcome_page_loading').fadeOut(function () {
-                hotot_log('init', 'done!');
-                $('#welcome_page_main').fadeIn();  
-                ui.Welcome.load_daily_hint();
-                ui.Welcome.load_profiles_info();
-                $('#profile_avatar_list a:first').click();
-                $(window).dequeue('_on_load_finish');
-            });
-            });
-        // 6. run track code
-        procs.push(function () {
-            track();
-            $(window).dequeue('_on_load_finish');
-        });
-        $(window).queue('_on_load_finish', procs);
-        $(window).dequeue('_on_load_finish');
-    }
-}
-
-function track() {
-    $('body').append('<iframe src="http://stat.hotot.org/?rnd='+Math.random()+'#platform='+conf.vars.platform+'&version='+conf.vars.version+'" style="width: 1px;height: 1px;position: absolute;top: 0;left: 0;z-index: 9999999;"></iframe>');
-}
-
-var globals = {
-      tweet_block_width: 600
-    , max_status_len: 140
-    , tweet_font_size: 12
-    , myself: {}
-    , in_main_view: false
-    , load_flags: 0
-    , ratelimit_bubble: null
-    , unread_alert_timer: null
-    , unread_count: null
-};
-
-jQuery(function($) {
-    globals.layout = $("#container").layout(layout_opts);
-    globals.layout.close("west");
-    globals.layout.close("south");
-
-    $(document).keyup(
-    function (event) {
-        var focus_input = (event.target.tagName == 'INPUT' || event.target.tagName == 'TEXTAREA');
-        if (event.shiftKey && !event.ctrlKey && !event.metaKey && !event.altKey && !focus_input) {
-            if (event.keyCode == 191) {
-                // '?' to open help & about dialog
-                globals.about_dialog.open();            
-                return;
-            }
-        }
-        if (event.ctrlKey && !event.shiftKey && !event.altKey && event.keyCode == 81) {
-            // <Ctrl> + q to quit
-            quit();
-        } 
-        if (focus_input || !globals.in_main_view)
-            return
-        if (! ui.ActionMenu.is_hide) {
-            return ui.ActionMenu.handle_keyup(event.keyCode);
-        }
-        hotkey.crack(event);
-        return true;
-    });
-
-    $(document).click(
-    function (event) {
-        if (event.button == 0) {
-            ui.ContextMenu.hide();
-        }
-    });
-
-    document.getElementById('indication').onmousewheel = function (event) {
-        if (event.wheelDelta < 0){
-            ui.Slider.slide_to_next();
-        } else {
-            ui.Slider.slide_to_prev();
-        }
-        return true;
-    };
-
-    document.body.onmousewheel = function (event) {
-        if (event.wheelDeltaY && (event.wheelDeltaX > 50 || event.wheelDeltaX < 50)){
-            return true;
-        }
-        if (event.wheelDeltaX && event.wheelDeltaX < -90){
-            ui.Slider.slide_to_next();
-        } else if (event.wheelDeltaX && event.wheelDeltaX > 90){
-            ui.Slider.slide_to_prev();
-        }
-    };
-    $('body').focus(function () {    
-        unread_alert(0);
-    });
-
-    $(window).resize(
-    function () {
-        update_tweet_block_width();
-        if (globals.load_flags) {
-            if (globals.load_flags == 2) {
-                conf.settings.size_w = $(window).width();
-                conf.settings.size_h = $(window).height();
-                conf.save_settings()
-                ui.Slider.slide_to(ui.Slider.current);
-            }
-        }
-    });
-
-    $("#count").hover(
-    function () {
-        $("#count > ul").show();
-    },
-    function () {
-        $("#count > ul").hide();
-    });
-
-    init();
-
-    update_tweet_block_width();
-});
-</script>
 
 </head>
 <body>
 
 <div id="container">
-
-
-<aside id="aside">
-</aside>
 
 <section id="center">
 <section id="welcome_page" class="page">
@@ -832,7 +128,7 @@ jQuery(function($) {
         <div style="clear:both"></div>
         <div class="bottom">
             <a id="btn_welcome_delete_profile" title="Delete this account" href="javascript:void(0)" data-i18n-text="delete">Delete</a>
-            <a id="btn_welcome_prefs" title="Preferences" href="javascript:void(0)" data-i18n-text="preferences">Preferences</a>     
+            <a id="btn_welcome_prefs" title="Preferences" href="javascript:void(0)" data-i18n-text="preferences">Preferences</a>
             <a id="btn_welcome_exts" title="Extensions" href="javascript:void(0)" data-i18n-text="extensions">Extensions</a>
         </div>
         <div style="clear:both"></div>
@@ -855,30 +151,30 @@ jQuery(function($) {
     <div id="main_page_slider">
     </div>
     <ul id="tweet_more_menu" class="hotot_menu">
-    <li><a id="tweet_alt_retweet_btn" class="tweet_retweet tweet_more_menu_btn" 
+    <li><a id="tweet_alt_retweet_btn" class="tweet_retweet tweet_more_menu_btn"
         title="Retweet this tweet"
         href="javascript:void(0);"
         data-i18n-text="retweet"
         >Retweet</a></li>
-    <li><a id="tweet_rt_btn" class="tweet_rt tweet_more_menu_btn" 
+    <li><a id="tweet_rt_btn" class="tweet_rt tweet_more_menu_btn"
         title="Quote this tweet"
         href="javascript:void(0);"
         data-i18n-text="quote"
         >Quote</a></li>
     <li><a id="tweet_reply_all_btn"
         class="tweet_more_menu_btn"
-        href="javascript:void(0);" 
+        href="javascript:void(0);"
         title="Reply All"
         data-i18n-text="reply_all"
         >Reply All</a></li>
-    <li><a id="tweet_alt_reply_btn" class="tweet_reply tweet_more_menu_btn" 
+    <li><a id="tweet_alt_reply_btn" class="tweet_reply tweet_more_menu_btn"
         title="Reply this tweet"
         href="javascript:void(0);"
         data-i18n-text="reply"
         >Reply</a></li>
-    <li><a id="tweet_dm_btn" 
+    <li><a id="tweet_dm_btn"
         class="tweet_more_menu_btn"
-        href="javascript:void(0);" 
+        href="javascript:void(0);"
         title="Send Message to them"
         data-i18n-text="send_message"
         >Send Message</a></li>
@@ -902,15 +198,15 @@ jQuery(function($) {
             <div class="stick_left">
                 <a id="hotot_button" class="indicator_btn action_button" href="#hotot" title="Click to expand menu"><span class="icon ic_hotot"></span></a>
                 <span class="shape"></span>
-            </div>        
+            </div>
             <div class="stick_left" style="width: 150px; left: 40px;">
                 <a id="indicator_compose_btn" class="indicator_btn action_button" href="#compose" title="Compose"><span class="icon ic_compose" data-i18n-text="compose" data-i18n-title="compose">Compose</span></a>
                 <span class="shape"></span>
-            </div>  
+            </div>
             <div>
                 <a id="indicator_add_btn" class="indicator_btn action_button" href="#add" title="Add new views" data-i18n-title="add_new_views"><span class="icon ic_add"></span></a>
                 <span class="shape"></span>
-            </div>  
+            </div>
 
         </div>
         <div id="indication_slot">
@@ -985,7 +281,7 @@ jQuery(function($) {
                 <li>
                      <a id="btn_sign_out" title="Sign out" href="javascript:void(0);" data-i18n-text="sign_out">Sign out</a>
                 </li>
-            </ul> 
+            </ul>
         </div>
         <div id="exts_menu_frame">
             <h2 style="padding: 5px 0; margin-left: 5px;" data-i18n-text="extensions">Extensions</h2>
@@ -1006,6 +302,15 @@ jQuery(function($) {
         <li>
             <a href="#retweets" data-i18n-text="retweets_view">Retweets view</a>
         </li>
+        <li>
+        <a href="#favs" data-i18n-text="favs_view">Favourites view</a>
+        </li>
+        <li>
+        <a href="#people" data-i18n-text="open_a_profile_dots">Open a Profile...</a>
+        </li>
+        <li>
+        <a href="#list" data-i18n-text="open_a_list_dots">Open a List ...</a>
+        </li>
     </ul>
     </div>
 </section>
@@ -1014,14 +319,14 @@ jQuery(function($) {
 </section> <!-- bottom -->
 
 </div><!-- container -->
-        
+
 <section id="status_box" class="closed">
     <span id="bubble_shape"></span>
-
     <div id="status_info">
-        <div id="status_info_text"></div>
+        <span id="status_info_text"></span>
         <input type="text" id="tbox_dm_target" class="entry" value="">
         <a id="btn_clear_status_info" title="Write a normal tweet" href="javascript:void(0);"></a>
+        <div class="clear"></div>
     </div>
     <div id="status_image_preview_wrapper">
         <a href="#" class="close_btn ic_close"></a>
@@ -1081,11 +386,17 @@ jQuery(function($) {
         </div>
         </div>
     </div>
+    <details id="status_drafts">
+        <summary class="sub_label">Drafts</summary>
+        <p><ul></ul></p>
+    </details> <!-- #status_drafts -->
+
     <div id="status_ctrl">
-        <a id="toggle_mode" width="20" class="button" title="Click to compose message"></a>
-        <a id="btn_shorturl" class="button"  title="URL shortener"></a>
-        <a id="btn_smiley" class="button"  title="Insert Smiley">:)</a>
-        <a id="btn_imageuploader" class="button"  title="Image uploader"></a>
+        <a id="toggle_mode" width="20" class="button toolbar_button" data-i18n-title="click_to_compose_message" title="Click to compose message"></a>
+        <a id="btn_shorturl" class="button toolbar_button" data-i18n-title="url_shortener" title="URL shortener"></a>
+        <a id="btn_smiley" class="button toolbar_button" data-i18n-title="Insert_smiley" title="Insert smiley"></a>
+        <a id="btn_imageuploader" class="button toolbar_button" data-i18n-title="image_uploader" title="Image uploader"></a>
+        <a id="btn_save_draft" class="button toolbar_button" data-i18n-title="save_as_draft" title="Save as drafts"></a>
         <a id="btn_clear" class="button" data-i18n-text="clear">Clear</a>
         <a id="btn_update" class="button" data-i18n-text="update">Update</a>
         <span class="clear"></span>
@@ -1131,19 +442,23 @@ jQuery(function($) {
     <div class="dialog_header">
         <ul id="prefs_dlg_btns" class="radio_group dark">
             <li><a id="btn_prefs_global"
-                    href="#prefs_global" 
+                    href="#prefs_global"
                     class="radio_group_btn selected"
                     data-i18n-text="globals">Globals</a>
             </li><li><a id="btn_prefs_account"
-                    href="#prefs_account" 
+                    href="#prefs_account"
                     class="radio_group_btn"
                     data-i18n-text="account">Account</a>
             </li><li><a id="btn_prefs_appearance"
-                    href="#prefs_appearance" 
+                    href="#prefs_appearance"
                     class="radio_group_btn"
                     data-i18n-text="look_and_feels">Looks &amp; Feels</a>
+            </li><li><a id="btn_prefs_behavior"
+                    href="#prefs_behavior"
+                    class="radio_group_btn"
+                    data-i18n-text="behavior">Behavior</a>
             </li><li><a id="btn_prefs_advanced"
-                    href="#prefs_advanced" 
+                    href="#prefs_advanced"
                     class="radio_group_btn"
                     data-i18n-text="advanced">Advanced</a>
             </li>
@@ -1160,35 +475,35 @@ jQuery(function($) {
             <p>
                 <input id="chk_prefs_use_http_proxy" class="checkbox"
                     title="Use HTTP Proxy" type="checkbox"/>
-                <label id="label_prefs_use_http_proxy" 
+                <label id="label_prefs_use_http_proxy"
                     for="chk_prefs_use_http_proxy"
                     class="label" data-i18n-text="enable_proxy">
                     Enable Proxy
                 </label><br/>
                 <input id="tbox_prefs_http_proxy_host"
-                    title="HTTP Proxy Host" 
-                    style="width: 120px;" 
+                    title="HTTP Proxy Host"
+                    style="width: 120px;"
                     type="text" class="entry"/>
                 <label class="label">:</label>
                 <input id="tbox_prefs_http_proxy_port"
-                    title="HTTP Proxy Port" 
+                    title="HTTP Proxy Port"
                     style="width: 40px;"
                     type="text" class="entry"/><br/>
                 <input id="chk_prefs_use_http_proxy_auth" class="checkbox"
                     title="Need Authentication" type="checkbox"/>
-                <label id="label_prefs_http_proxy_auth" 
+                <label id="label_prefs_http_proxy_auth"
                     for="chk_prefs_use_http_proxy_auth"
                     class="label" data-i18n-text="proxy_auth">
                     Authentication
-                </label><br/> 
+                </label><br/>
                 <label class="label" data-i18n-text="proxy_auth_name">Username</label>
                 <input id="tbox_prefs_http_proxy_auth_name"
-                    title="HTTP Proxy Authentication Name" 
-                    style="width: 120px;" 
+                    title="HTTP Proxy Authentication Name"
+                    style="width: 120px;"
                     type="text" class="entry"/>
                 <label class="label" data-i18n-text="proxy_auth_password">Password</label>
                 <input id="tbox_prefs_http_proxy_auth_password"
-                    title="HTTP Proxy Authentication Password" 
+                    title="HTTP Proxy Authentication Password"
                     style="width: 120px;"
                     type="text" class="entry"/><br/>
             </p>
@@ -1197,7 +512,7 @@ jQuery(function($) {
             <h3>- <span data-i18n-text="keybinding">Keybinding</span> -</h3>
             <p>
                 <label class="label" data-i18n-text="summon_hotot">Summon Hotot (like: &lt;ALT&gt;C)</label><br/>
-                <input id="tbox_prefs_shortcut_summon_hotot" 
+                <input id="tbox_prefs_shortcut_summon_hotot"
                      title="Summon Hot Key"
                      type="text" class="entry"/><br/>
             </p>
@@ -1206,14 +521,14 @@ jQuery(function($) {
             <h3>- <span data-i18n-text="misc">Misc</span> -</h3>
             <p>
                 <input id="chk_prefs_use_verbose_mode"
-                    title="Enable verbose mode or not" 
+                    title="Enable verbose mode or not"
                     type="checkbox" class="checkbox"/>
                 <label for="chk_prefs_use_verbose_mode"
                     class="label"
                     data-i18n-text="enable_verbose_mode"
                     >Enable verbose mode</label><br/>
                 <input id="chk_prefs_use_ubuntu_indicator"
-                    title="Use Ubuntu Indicator" 
+                    title="Use Ubuntu Indicator"
                     type="checkbox" class="checkbox"/>
                 <label for="chk_prefs_use_ubuntu_indicator" class="label"
                     data-i18n-text="use_ubuntu_indicator"
@@ -1234,7 +549,7 @@ jQuery(function($) {
             <h3>- <span data-i18n-text="identica">Identi.ca</span> -</h3>
             <p>
                 <input id="chk_prefs_remember_password"
-                    type="checkbox" class="checkbox" 
+                    type="checkbox" class="checkbox"
                     title="Remember Password" checked="1"/>
                 <label for="chk_prefs_remember_password" class="label"
                     data-i18n-text="remember_password">Remember Password
@@ -1244,11 +559,29 @@ jQuery(function($) {
         </div> <!-- END of #prefs_account -->
         <div id='prefs_appearance' class="prefs_dlg_page">
             <div class="dialog_block">
+            <h3>- <span data-i18n-text="language">Language</span> -</h3>
+            <p>
+                <label data-i18n-text="interface_language">Interface language: </label>
+                <select id="sel_prefs_lang" class="combo"
+                    title="Select a language"
+                    data-i18n-title="select_a_language">
+                    <option value="auto">Auto Detect</option>
+                    <option value="pt_BR">Brazilian Portuguese</option>
+                    <option value="zh_CN">Chinese (Simplified)</option>
+                    <option value="en">English</option>
+                    <option value="fr">French</option>
+                    <option value="ja">Japanese</option>
+                    <option value="es">Spanish</option>
+                </select>
+            </p>
+            </div>
+            <div class="dialog_block">
             <h3>- <span data-i18n-text="theme">Theme</span> -</h3>
             <p>
                 <table class="void_table" border="0">
                     <tr>
-                        <td><label class="label">Themes</label></td>
+                        <td><label class="label"
+                                data-i18n-text="themes">Themes</label></td>
                         <td>
                         <select id="sel_prefs_theme" class="combo"
                             title="Select a theme" style="width:150px;">
@@ -1257,20 +590,23 @@ jQuery(function($) {
                         </select>
                         </td>
                         <td rowspan="5" style="text-align: right">
-                            <img id="prefs_theme_preview" src="#" 
+                            <img id="prefs_theme_preview" src="#"
                             alt="No Preview"/>
                         </td>
                     </tr>
                     <tr>
-                        <td><label class="label">Name</label></td>
+                        <td><label class="label"
+                                data-i18n-text="name">Name</label></td>
                         <td><label class="label" id="prefs_theme_name"></label></td>
                     </tr>
                     <tr>
-                        <td><label class="label">Author</label></td>
+                        <td><label class="label"
+                                data-i18n-text="author">Author</label></td>
                         <td><label class="label" id="prefs_theme_author"></label></td>
                     </tr>
                     <tr>
-                        <td><label class="label">Web</label></td>
+                        <td><label class="label"
+                                data-i18n-text="web">Web</label></td>
                         <td ><a class="label" id="prefs_theme_web" target="_blank" href="#"></a></td>
                     </tr>
                     <tr>
@@ -1289,7 +625,7 @@ jQuery(function($) {
                 <label class="label"
                     data-i18n-text="system_font">System Font</label>
                 </td><td>
-                <input id="rdo_use_custom_font" type="radio" 
+                <input id="rdo_use_custom_font" type="radio"
                     class="radio" name="font" />
                 <label class="label"
                     data-i18n-text="custom_font">Custom Font</label>
@@ -1303,10 +639,10 @@ jQuery(function($) {
                     <option value="1">1</option>
                 </select></td><td>
                 <input id="tbox_prefs_custom_font"
-                    title="Custom Font" 
+                    title="Custom Font"
                     type="text" class="entry"/></td><td>
-                <input id="tbox_prefs_font_size" 
-                    title="Font Size" 
+                <input id="tbox_prefs_font_size"
+                    title="Font Size"
                     style="width:30px" type="text" class="entry"/>
                 <label class="label" data-i18n-text="px">px</label></td></tr>
                 </tbody></table>
@@ -1318,19 +654,48 @@ jQuery(function($) {
             </p>
             </div>
             <div class="dialog_block">
+            <h3>- <span data-i18n-text="effects">Effects</span> -</h3>
+            <p>
+                <input id="rdo_effects_level_low" type="radio"
+                    class="radio" name="effects" value="0" checked/>
+                <strong><label class="label" data-i18n-text="effects_low"
+                    >Low</label>:</strong>
+                <label class="label" data-i18n-text="disable_decoration_of_widgets_and_some_animations"
+                    >Disable decoration of widgets and some animations.</label>
+                <br/>
+                <input id="rdo_effects_level_normal" type="radio"
+                    class="radio" name="effects" value="1"/>
+                <strong><label class="label" data-i18n-text="effects_normal"
+                    >Normal</label>:</strong>
+                <label class="label" data-i18n-text="balance_between_attractiveness_and_preformance"
+                    >Balance between attractiveness and performance.</label>
+                <br/>
+                <input id="rdo_effects_level_extra" type="radio"
+                    class="radio" name="effects" value="2"/>
+                <strong><label class="label" data-i18n-text="effects_extra"
+                    >Extra</label>:</strong>
+                <label class="label" data-i18n-text="more_effects_like_shadows_and_glow_of_widgets"
+                    >More effects like shadows and glow of widgets.</span>
+                <label/>
+            </p>
+            </div>
+
+        </div><!-- END of prefs_appearance -->
+        <div id='prefs_behavior' class="prefs_dlg_page">
+            <div class="dialog_block">
             <h3>- <span data-i18n-text="behavior">Behavior</span> -</h3>
             <p>
-                <input id="chk_prefs_use_native_notify" 
+                <input id="chk_prefs_use_native_notify"
                     title="Use Native Notify" class="checkbox"
                     type="checkbox"/>
                 <label for="chk_prefs_use_native_notify" class="label"
                     data-i18n-text="use_native_notify_system"
                     >Use Native Notify System</label><br/>
-                <input id="chk_prefs_use_preload_conversation" 
-                    title="Preload latest tweet in a conversation if it is cached." 
+                <input id="chk_prefs_use_preload_conversation"
+                    title="Preload latest tweet in a conversation if it is cached."
                     class="checkbox"
                     type="checkbox"/>
-                <label for="chk_prefs_use_preload_conversation"  
+                <label for="chk_prefs_use_preload_conversation"
                     class="label"
                     data-i18n-text="preload_latest_tweets_in_conversations_if_possible"
                     >Preload latest tweets in conversations if possible.</label><br/>
@@ -1360,38 +725,12 @@ jQuery(function($) {
                     >Preview embedded media.</label><br/>
             </p>
             </div>
-            <div class="dialog_block">
-            <h3>- <span data-i18n-text="effects">Effects</span> -</h3>
-            <p>
-                <input id="rdo_effects_level_low" type="radio"
-                    class="radio" name="effects" value="0" checked/>
-                <strong><label class="label" data-i18n-text="effects_low"
-                    >Low</label>:</strong>
-                <label class="label" data-i18n-text="disable_decoration_of_widgets_and_some_animations"
-                    >Disable decoration of widgets and some animations.</label>
-                <br/>
-                <input id="rdo_effects_level_normal" type="radio"
-                    class="radio" name="effects" value="1"/>
-                <strong><label class="label" data-i18n-text="effects_normal"
-                    >Normal</label>:</strong>
-                <label class="label" data-i18n-text="balance_between_attractiveness_and_preformance"
-                    >Balance between attractiveness and performance.</label>
-                <br/>
-                <input id="rdo_effects_level_extra" type="radio"
-                    class="radio" name="effects" value="2"/>
-                <strong><label class="label" data-i18n-text="effects_extra"
-                    >Extra</label>:</strong>
-                <label class="label" data-i18n-text="more_effects_like_shadows_and_glow_of_widgets"
-                    >More effects like shadows and glow of widgets.</span>
-                <label/>
-            </p>
-            </div>
-        </div><!-- END of prefs_appearance -->
-        <div id='prefs_advanced' class="prefs_dlg_page"> 
+       </div><!-- END of prefs_behavior-->
+        <div id='prefs_advanced' class="prefs_dlg_page">
             <div class="dialog_block">
             <h3>- <span data-i18n-text="api_setting">API Settings</span> -</h3>
             <p>
-                <label class="label" 
+                <label class="label"
                     data-i18n-text="api_base">API Base</label><br/>
                 <input id="tbox_prefs_api_base"
                     title="API Base" type="text" class="entry"/><br/>
@@ -1402,15 +741,15 @@ jQuery(function($) {
                     data-i18n-text="same_signing_api_base" class="label"
                     >Same signing API base:
                 </label><br/>
-                <input id="tbox_prefs_sign_api_base"  
+                <input id="tbox_prefs_sign_api_base"
                     title="Signing API Base"
                     type="text" class="entry"/><br/>
                 <label class="label" data-i18n-text="oauth_base"
                     >OAuth Base</label><br/>
-                <input id="tbox_prefs_oauth_base" 
+                <input id="tbox_prefs_oauth_base"
                     title="OAuth Base" type="text" class="entry"/><br/>
                 <input id="chk_prefs_use_same_sign_oauth_base"
-                    title="Use same Signing OAuth Base" 
+                    title="Use same Signing OAuth Base"
                     type="checkbox" class="checkbox"/>
                 <label for="chk_prefs_use_same_sign_oauth_base"
                     class="label"
@@ -1420,11 +759,11 @@ jQuery(function($) {
                 <input id="tbox_prefs_sign_oauth_base"
                     title="Signing OAuth Base"
                     type="text" class="entry"/><br/>
-                <label class="label" 
+                <label class="label"
                     data-i18n-text="search_api_base2"
                     >Search API Base</label><br/>
                 <input id="tbox_prefs_search_api_base2"
-                    title="Search API Base" 
+                    title="Search API Base"
                     type="text" class="entry"/><br/>
             </p>
             </div>
@@ -1466,7 +805,7 @@ jQuery(function($) {
         <p data-i18n-text="copy_the_pin_code_and_paste_it_into_the_box_below"
         >Copy the PIN Code and paste it into the box below</p>
         <p style="text-align: center;">
-            <label class="label" 
+            <label class="label"
                 data-i18n-text="pin_code">PIN Code:</label>
             <br/>
             <input id="tbox_oauth_pin" type="text" class="entry"/><br/>
@@ -1490,19 +829,19 @@ jQuery(function($) {
     <div class="dialog_header">
         <ul id="about_dlg_btns" class="radio_group dark">
             <li><a id="btn_about_about"
-                    href="#about_about" 
+                    href="#about_about"
                     class="radio_group_btn selected"
                     data-i18n-text="about">About</a>
             </li><li><a id="btn_about_keyboard"
-                    href="#about_keyboard" 
+                    href="#about_keyboard"
                     class="radio_group_btn"
                     data-i18n-text="keyboard">Keyboard</a>
             </li><li><a id="btn_about_credits"
-                    href="#about_credits" 
+                    href="#about_credits"
                     class="radio_group_btn"
                     data-i18n-text="credits">Credits</a>
             </li><li><a id="btn_about_license"
-                    href="#about_license" 
+                    href="#about_license"
                     class="radio_group_btn"
                     data-i18n-text="license">License</a>
             </li>
@@ -1562,7 +901,7 @@ jQuery(function($) {
             <h3>- <span data-i18n-text="credits">Credits</span> -</h3>
             <p>
                 <label>Written by</label>:<br/>
-                - Shellex Wai &lt;<a target="_blank" href="mailto:5h3ll3x@gmail.com">5h3ll3x@gmail.com</a>&gt; 
+                - Shellex Wai &lt;<a target="_blank" href="mailto:5h3ll3x@gmail.com">5h3ll3x@gmail.com</a>&gt;
                 (<a target="_blank" href="http://twitter.com/shellex">@shellex</a>)<br/>
 
                 - Jiahua Huang &lt;<a target="_blank" href="mailto:jhuangjiahua@gmail.com">jhuangjiahua@gmail.com</a>&gt;
@@ -1579,13 +918,13 @@ jQuery(function($) {
             </p>
             <p>
                 <label>Artwork by</label>: <br/>
-                - Evan &lt;<a target="_blank" href="http://www.freemagi.com.com">www.freemagi.com</a>&gt; 
+                - Evan &lt;<a target="_blank" href="http://www.freemagi.com.com">www.freemagi.com</a>&gt;
                 (<a target="_blank" href="http://twitter.com/OiCKilL">@OiCKilL</a>)<br/>
                 - Shellex Wai <br/>
             </p>
             <p>
                 <label>Document by</label>: <br/>
-                - Marguerite Su &lt;<a target="_blank" href="mailto:admin@doublechou.pp.ru">admin@doublechou.pp.ru</a>&gt; 
+                - Marguerite Su &lt;<a target="_blank" href="mailto:admin@doublechou.pp.ru">admin@doublechou.pp.ru</a>&gt;
                 (<a target="_blank" href="http://twitter.com/doublechou">@doublechou</a>)<br/>
 
             </p>
@@ -1649,7 +988,7 @@ along with this program. If not, see <a target="_blank" href="http://www.gnu.org
             <span id="profile_tweet_per_day_cnt"></span><br/>
             <label class="label" data-i18n-text="friend_stat">Friends</span>: </label>
             <span id="profile_friend_cnt"></span><br/>
-            <label class="label" data-i18n-text="follower_stat">Followers</span>: </label> 
+            <label class="label" data-i18n-text="follower_stat">Followers</span>: </label>
             <span id="profile_follower_cnt"></span><br/>
             <label class="label" data-i18n-text="favorites">Favourites</span>: </label>
             <span id="profile_favourite_cnt"></span><br/>
@@ -1700,15 +1039,15 @@ along with this program. If not, see <a target="_blank" href="http://www.gnu.org
         <tr>
             <td><label class="label">Privacy:</label></td>
             <td>
-                <input id="list_attr_privacy_public" class="radio" 
+                <input id="list_attr_privacy_public" class="radio"
                     type="radio" name="list_attr_privacy" value="public"
-                    title="Anyone can follow this list" checked> 
+                    title="Anyone can follow this list" checked>
                 <label class="label"
                     for="list_attr_privacy_public">Public</label>
                 <input id="list_attr_privacy_private" class="radio"
                     type="radio" name="list_attr_privacy" value="private"
-                    title="Only you can access this list"> 
-                <label class="label" 
+                    title="Only you can access this list">
+                <label class="label"
                     for="list_attr_privacy_private">Private</label>
             </td>
         </tr>
@@ -1804,11 +1143,11 @@ along with this program. If not, see <a target="_blank" href="http://www.gnu.org
         <h2 class="dialog_title" data-i18n-text="kismet_content_firewall">Kismet Content Firewall</h2>
         <a class="dialog_close_btn" title="Close" href="javascript:void(0);"></a>
     </div>
-    
+
     <div class="dialog_container">
-    
+
     <div class="dialog_header"></div>
-    
+
     <div id="kismet_dlg_body" class="dialog_body">
         <ul id="kismet_rule_list">
         </ul>
@@ -1826,11 +1165,11 @@ along with this program. If not, see <a target="_blank" href="http://www.gnu.org
             <table>
             <tr>
                 <td>
-                    <label class="label" 
+                    <label class="label"
                         for="kismet_rule_name">Name:</label>
                 </td>
                 <td colspan="2">
-                    <input id="kismet_rule_name" 
+                    <input id="kismet_rule_name"
                         type="text" class="entry"/>
                 </td>
                 <td><label class="label">Type: </label>
@@ -1869,9 +1208,9 @@ along with this program. If not, see <a target="_blank" href="http://www.gnu.org
                 <td><input id="kismet_action_mask"
                     type="checkbox" class="mask checkbox" value="2"/>
                     <label for="kismet_action_mask">Mask</label></td>
-                <td><input id="kismet_action_archive" 
+                <td><input id="kismet_action_archive"
                     type="checkbox" class="checkbox" value="3"/>
-                    <label for="kismet_action_archive">Archive</label> 
+                    <label for="kismet_action_archive">Archive</label>
                 </td>
             </tr>
             </table>

@@ -15,6 +15,10 @@
 		"message": "Please enter a profile prefix",
 		"description": "data/js/ui.welcome.js"
 	},
+	"themes": {
+		"message": "Themes",
+		"description": "data/index.html"
+	},
 	"use_native_notify_system": {
 		"message": "Use native notify system",
 		"description": "data/index.html"
@@ -56,7 +60,7 @@
 		"description": "data/index.html"
 	},
 	"click_the_button_below": {
-		"message": "Click the buttone below",
+		"message": "Click the button below",
 		"description": "data/index.html"
 	},
 	"theme": {
@@ -75,8 +79,12 @@
 		"message": "Destroy Successfully!",
 		"description": "data/js/ui.main.js"
 	},
+	"interface_language": {
+		"message": "Interface language",
+		"description": "data/index.html"
+	},
 	"some_error_occur": {
-		"message": "Some Error Occur",
+		"message": "Some Error Occured",
 		"description": "data/index.html"
 	},
 	"nearly_dead": {
@@ -126,6 +134,10 @@
 	"paste_from_clipboard": {
 		"message": "Paste from clipboard",
 		"description": "date/index.html"
+	},
+	"url_shortener": {
+		"message": "URL shortener",
+		"description": "data/index.html"
 	},
 	"please_enter_the_recipient": {
 		"message": "please enter the recipient!",
@@ -228,7 +240,7 @@
 		"description": "data/index.html"
 	},
 	"charactor_at_is_not_allow_in_profile_prefix": {
-		"message": "Charactor `@` is not allowed in profile prefix",
+		"message": "Character `@` is not allowed in profile prefix",
 		"description": "data/js/ui.welcome.js"
 	},
 	"action": {
@@ -339,9 +351,13 @@
 		"message": "Friend",
 		"description": "data/js/ui.template.js"
 	},
-	"retweeted_by": {
-		"message": "Retweeted by",
+	"mention_them": {
+		"message": "Mention",
 		"description": "data/js/ui.template.js"
+	},
+	"undo_retweeting_dots": {
+		"message": "Undo retweeting ...",
+		"description": "data/js/ui.main.js"
 	},
 	"same_signing_api_base": {
 		"message": "Same Signing API Base",
@@ -358,6 +374,10 @@
 	"join": {
 		"message": "Join",
 		"description": "data/js/ui.template.js"
+	},
+	"image_uploader": {
+		"message": "Image uploader",
+		"description": "data/index.html"
 	},
 	"my_power": {
 		"message": "My Power",
@@ -391,12 +411,20 @@
 		"message": "Click to show",
 		"description": "data/js/ui.template.js"
 	},
+	"open_a_list_dots": {
+		"message": "Open a List ...",
+		"description": "data/index.html"
+	},
 	"profile_name": {
 		"message": "Profile Name",
 		"description": "data/index.html"
 	},
 	"clean_token": {
 		"message": "Clean token",
+		"description": "data/index.html"
+	},
+	"save_as_draft": {
+		"message": "Save as draft",
 		"description": "data/index.html"
 	},
 	"information": {
@@ -411,17 +439,21 @@
 		"message": "Preload latest tweets in conversations if possible.",
 		"description": "data/index.html"
 	},
-	"undo_retweeting_dots": {
-		"message": "Undo retweeting ...",
-		"description": "data/js/ui.main.js"
+	"Insert_smiley": {
+		"message": "Insert simley",
+		"description": "data/index.html"
 	},
 	"followers": {
 		"message": "Followers",
 		"description": "data/js/ui.template.js"
 	},
-	"reset_time": {
-		"message": "Reset Time",
+	"weakness": {
+		"message": "Weakness",
 		"description": "data/js/lib.twitterapi.js"
+	},
+	"extensions": {
+		"message": "Extensions",
+		"description": "data/index.html"
 	},
 	"retweets_view": {
 		"message": "Retweets View",
@@ -551,8 +583,8 @@
 		"message": "Bio",
 		"description": "data/index.html"
 	},
-	"weakness": {
-		"message": "Weakness",
+	"reset_time": {
+		"message": "Reset Time",
 		"description": "data/js/lib.twitterapi.js"
 	},
 	"mentions_view": {
@@ -600,7 +632,7 @@
 		"description": "data/index.html"
 	},
 	"greeting": {
-		"message": "Greeting!",
+		"message": "Greetings!",
 		"description": "data/index.html"
 	},
 	"system_font": {
@@ -628,7 +660,7 @@
 		"description": "data/index.html"
 	},
 	"post_successfully": {
-		"message": "Post Successfully!",
+		"message": "Posted Successfully!",
 		"description": "data/js/ui.status_box.js"
 	},
 	"reload": {
@@ -676,7 +708,7 @@
 		"description": "data/js/ui.template.js"
 	},
 	"copy_to_clipboard": {
-		"message": "Copy to clipboard",
+		"message": "Copy into clipboard",
 		"description": "date/index.html"
 	},
 	"about": {
@@ -691,6 +723,10 @@
 		"message": "OK",
 		"description": "data/index.html"
 	},
+	"language": {
+		"message": "Language",
+		"description": "data/index.html"
+	},
 	"messages": {
 		"message": "Messages",
 		"description": "data/js/ui.slider.js"
@@ -703,12 +739,16 @@
 		"message": "Status is over 140 characters!",
 		"description": "data/js/ui.status_box.js"
 	},
-	"extensions": {
-		"message": "Extensions",
+	"select_a_language": {
+		"message": "Select a language",
 		"description": "data/index.html"
 	},
+	"more_actions": {
+		"message": "More",
+		"description": "data/js/ui.template.js"
+	},
 	"preview_embedded_media": {
-		"message": "Preview Embedded Meida",
+		"message": "Preview Embedded Media",
 		"description": "data/index.html"
 	},
 	"api_base": {
@@ -724,7 +764,7 @@
 		"description": "data/index.html"
 	},
 	"follower_stat": {
-		"message": "Follower",
+		"message": "Followers",
 		"description": "data/index.html"
 	},
 	"or_copy_the_address_and_open_it_in_your_browser": {
@@ -736,19 +776,23 @@
 		"description": "data/index.html"
 	},
 	"update_successfully": {
-		"message": "Update Successfully!",
+		"message": "Updated Successfully!",
 		"description": "data/js/ui.status_box.js"
 	},
 	"you_are_not_following_each_other": {
 		"message": "You are not following each other.",
 		"description": "data/js/ui.peopleview.js"
 	},
+	"click_to_compose_message": {
+		"message": "Click to compose message",
+		"description": "data/index.html"
+	},
 	"you_are_following": {
 		"message": "You are following",
 		"description": "data/js/ui.peopleview.js"
 	},
 	"friend_stat": {
-		"message": "Friend",
+		"message": "Friends",
 		"description": "data/index.html"
 	},
 	"same_signing_oauth_base": {
@@ -766,6 +810,10 @@
 	"you_are_followed_by_them": {
 		"message": "You are followed by them.",
 		"description": "data/js/ui.peopleview.js"
+	},
+	"open_a_profile_dots": {
+		"message": "Open a Profile ...",
+		"description": "data/index.html"
 	},
 	"pin_code": {
 		"message": "PIN Code",
@@ -792,7 +840,7 @@
 		"description": "data/index.html"
 	},
 	"globals_restart_hint": {
-		"message": "You MUST restart Hotot for some changes below to take effect. And these options will affect ALL accounts",
+		"message": "You MUST restart Hotot for some changes below to take effect. And these changes will affect ALL accounts",
 		"description": "data/index.html"
 	},
 	"upload_photo": {
@@ -827,6 +875,10 @@
 		"message": "Retweeting ...",
 		"description": "data/js/ui.main.js"
 	},
+	"drafts": {
+		"message": "Drafts",
+		"description": "data/js/ui.status_box.js"
+	},
 	"oops_a_network_error_occurs": {
 		"message": "Oops, A Network Error Occurs",
 		"description": "data/js/ui.welcome.js"
@@ -838,6 +890,10 @@
 	"more_effects_like_shadows_and_glow_of_widgets": {
 		"message": "More effects like shadows and glow of widgets",
 		"description": "data/index.html"
+	},
+	"my_favs": {
+		"message": "My Favorites",
+		"description": "data/js/ui.slider.js"
 	},
 	"slide_to_next_page": {
 		"message": "Slide to next page",
@@ -852,7 +908,7 @@
 		"description": "data/index.html"
 	},
 	"this_profile_may_has_already_exists": {
-		"message": "This profile may has already exists!",
+		"message": "This profile may already exist!",
 		"description": "data/js/ui.welcome.js"
 	},
 	"quote": {
@@ -871,9 +927,9 @@
 		"message": "Look & Feels",
 		"description": "data/index.html"
 	},
-	"more_actions": {
-		"message": "More",
-		"description": "data/js/ui.template.js"
+	"favs_view": {
+		"message": "Favorites View",
+		"description": "data/index.html"
 	},
 	"friends": {
 		"message": "Friends",
@@ -895,8 +951,8 @@
 		"message": "You are friends.",
 		"description": "data/js/ui.peopleview.js"
 	},
-	"mention_them": {
-		"message": "Mention",
+	"retweeted_by": {
+		"message": "Retweeted by",
 		"description": "data/js/ui.template.js"
 	},
 	"reply_to": {

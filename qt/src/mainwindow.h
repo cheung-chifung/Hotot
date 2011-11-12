@@ -20,21 +20,31 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "common.h"
+
 // Qt
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 
+// Meego
+#ifdef MEEGO_EDITION_HARMATTAN
+#include <MApplicationWindow>
+#endif
+
+class QWebInspector;
 class TrayIconBackend;
 class KStatusNotifierItem;
-namespace Ui
-{
-class MainWindow;
-}
 
-class QWebView;
+#ifdef MEEGO_EDITION_HARMATTAN
+typedef MApplicationWindow ParentWindow;
+#else
+typedef QMainWindow ParentWindow;
+#endif
+
+class QGraphicsWebView;
 class HototWebPage;
 
-class MainWindow : public QMainWindow
+class MainWindow : public ParentWindow
 {
     Q_OBJECT
 public:
@@ -44,20 +54,27 @@ public:
     void triggerVisible();
     void activate();
     void unreadAlert(QString number);
+    void setEnableDeveloperTool(bool e);
 
 protected Q_SLOTS:
     void loadFinished(bool ok);
+    void showDeveloperTool();
+#ifdef MEEGO_EDITION_HARMATTAN
+    void contentSizeChanged();
+#endif
 
 protected:
     void initDatabases();
     void closeEvent(QCloseEvent *evnet);
 
 private:
-    Ui::MainWindow *ui;
     HototWebPage* m_page;
-    QWebView* m_webView;
+    QGraphicsWebView* m_webView;
+    QWebInspector* m_inspector;
     QMenu* m_menu;
     TrayIconBackend* m_tray;
+    QAction* m_actionExit;
+    QAction* m_actionDev;
 };
 
 #endif // MAINWINDOW_H

@@ -15,6 +15,10 @@
 		"message": "请输入一个账户前缀",
 		"description": "data/js/ui.welcome.js"
 	},
+	"themes": {
+		"message": "主题",
+		"description": "data/index.html"
+	},
 	"use_native_notify_system": {
 		"message": "使用原生通知机制",
 		"description": ""
@@ -75,6 +79,10 @@
 		"message": "删除成功！",
 		"description": "data/js/ui.main.js"
 	},
+	"interface_language": {
+		"message": "介面语言",
+		"description": "data/index.html"
+	},
 	"some_error_occur": {
 		"message": "矮油～ 发生了点错误耶 >_<",
 		"description": "data/index.html"
@@ -126,6 +134,10 @@
 	"paste_from_clipboard": {
 		"message": "从剪贴板粘贴",
 		"description": "date/index.html"
+	},
+	"url_shortener": {
+		"message": "URL缩短器",
+		"description": "data/index.html"
 	},
 	"please_enter_the_recipient": {
 		"message": "殿下，请指定收件人！",
@@ -339,9 +351,13 @@
 		"message": "朋友",
 		"description": "data/js/ui.template.js"
 	},
-	"retweeted_by": {
-		"message": "转发人:",
+	"mention_them": {
+		"message": "提及",
 		"description": "data/js/ui.template.js"
+	},
+	"undo_retweeting_dots": {
+		"message": "撤销转发...",
+		"description": "data/js/ui.main.js"
 	},
 	"same_signing_api_base": {
 		"message": "使用相同API进行签名",
@@ -358,6 +374,10 @@
 	"join": {
 		"message": "加入",
 		"description": "data/js/ui.template.js"
+	},
+	"image_uploader": {
+		"message": "图片上传器",
+		"description": "data/index.html"
 	},
 	"my_power": {
 		"message": "魔法值",
@@ -391,12 +411,20 @@
 		"message": "点击查看",
 		"description": "data/js/ui.template.js"
 	},
+	"open_a_list_dots": {
+		"message": "打开一个列表",
+		"description": "data/index.html"
+	},
 	"profile_name": {
 		"message": "账户名",
 		"description": ""
 	},
 	"clean_token": {
 		"message": "清空令牌",
+		"description": "data/index.html"
+	},
+	"save_as_draft": {
+		"message": "保存到草稿",
 		"description": "data/index.html"
 	},
 	"information": {
@@ -411,17 +439,21 @@
 		"message": "如果可能的话，预加载对话的上一条状态",
 		"description": ""
 	},
-	"undo_retweeting_dots": {
-		"message": "撤销转发...",
-		"description": "data/js/ui.main.js"
+	"Insert_smiley": {
+		"message": "插入表情",
+		"description": "data/index.html"
 	},
 	"followers": {
 		"message": "关注者",
 		"description": "data/js/ui.template.js"
 	},
-	"reset_time": {
-		"message": "下次补魔时间",
+	"weakness": {
+		"message": "虚弱",
 		"description": "data/js/lib.twitterapi.js"
+	},
+	"extensions": {
+		"message": "扩展",
+		"description": ""
 	},
 	"retweets_view": {
 		"message": "转发",
@@ -551,8 +583,8 @@
 		"message": "自述",
 		"description": ""
 	},
-	"weakness": {
-		"message": "虚弱",
+	"reset_time": {
+		"message": "下次补魔时间",
 		"description": "data/js/lib.twitterapi.js"
 	},
 	"mentions_view": {
@@ -691,6 +723,10 @@
 		"message": "确定",
 		"description": ""
 	},
+	"language": {
+		"message": "语言",
+		"description": "data/index.html"
+	},
 	"messages": {
 		"message": "私信",
 		"description": "data/js/ui.slider.js"
@@ -703,9 +739,13 @@
 		"message": "超过140字了，亲！",
 		"description": "data/js/ui.status_box.js"
 	},
-	"extensions": {
-		"message": "扩展",
-		"description": ""
+	"select_a_language": {
+		"message": "选择语言",
+		"description": "data/index.html"
+	},
+	"more_actions": {
+		"message": "更多动作",
+		"description": "data/js/ui.template.js"
 	},
 	"preview_embedded_media": {
 		"message": "预览嵌入的多媒体",
@@ -743,6 +783,10 @@
 		"message": "你们宛如路人，擦身而过，不相往来。",
 		"description": "data/js/ui.peopleview.js"
 	},
+	"click_to_compose_message": {
+		"message": "点击切换DM模式",
+		"description": "data/index.html"
+	},
 	"you_are_following": {
 		"message": "你默默地，关注着他／她／它…",
 		"description": "data/js/ui.peopleview.js"
@@ -766,6 +810,10 @@
 	"you_are_followed_by_them": {
 		"message": "他／她／它默默地关注着你…",
 		"description": "data/js/ui.peopleview.js"
+	},
+	"open_a_profile_dots": {
+		"message": "打开一个用户页",
+		"description": "data/index.html"
 	},
 	"pin_code": {
 		"message": "PIN Code",
@@ -827,6 +875,10 @@
 		"message": "转发中...",
 		"description": "data/js/ui.main.js"
 	},
+	"drafts": {
+		"message": "草稿",
+		"description": "data/js/ui.status_box.js"
+	},
 	"oops_a_network_error_occurs": {
 		"message": "矮油～ 发生了一个网路错误！",
 		"description": "data/js/ui.welcome.js"
@@ -838,6 +890,10 @@
 	"more_effects_like_shadows_and_glow_of_widgets": {
 		"message": "开启更多特效，比如阴影和发光。",
 		"description": "data/index.html"
+	},
+	"my_favs": {
+		"message": "我的收藏",
+		"description": "data/js/ui.slider.js"
 	},
 	"slide_to_next_page": {
 		"message": "切换到下一页",
@@ -871,9 +927,9 @@
 		"message": "感官",
 		"description": ""
 	},
-	"more_actions": {
-		"message": "更多动作",
-		"description": "data/js/ui.template.js"
+	"favs_view": {
+		"message": "我的收藏",
+		"description": "data/index.html"
 	},
 	"friends": {
 		"message": "朋友",
@@ -895,8 +951,8 @@
 		"message": "你们默默地关注着对方…",
 		"description": "data/js/ui.peopleview.js"
 	},
-	"mention_them": {
-		"message": "提及",
+	"retweeted_by": {
+		"message": "转发人:",
 		"description": "data/js/ui.template.js"
 	},
 	"reply_to": {

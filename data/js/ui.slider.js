@@ -19,6 +19,10 @@ isViewSettingMenuClosed: true,
 
 state: null,
 
+FLOAT_ICON: 1,
+
+system_views: {'home':0, 'mentions':0, 'messages':0, 'retweets':0, 'favs':0, 'search':0},
+
 init:
 function init () {
     this.id = '#main_page_slider';
@@ -64,12 +68,37 @@ function init () {
 
     $('#slider_menu a').click(function(){
         var name = $(this).attr('href').substring(1);
-        var ret = ui.Slider.addDefaultView(name, {});
-        if (ret == true) {
-            $(this).addClass('checked');
-            if (name != 'search') {
-                ui.Main.views[name].load();
+        var ret = null;
+        switch (name) {
+        case 'people':
+            ret = widget.DialogManager.prompt('Input a screenname:', 
+                'form @screenname',
+                function (ret) {
+                    if (ret != '') {
+                        if (ret[0] == '@') ret = ret.substring(1);
+                        open_people(ret, {});
+                    }
+                });
+        break;
+        case 'list':
+            ret = widget.DialogManager.prompt('Input a List name:',
+                'form: @screenname/slug',
+                function (ret) {
+                    if (ret != '') {
+                        if (ret[0] == '@') ret = ret.substring(1);
+                        open_list(ret.substring(0, ret.indexOf('/')),
+                            ret.substring(ret.indexOf('/')+1), {});
+                    }
+                });
+        break;
+        default:
+            if (ui.Slider.addDefaultView(name, {}) == true) {
+                $(this).addClass('checked');
+                if (name != 'search') {
+                    ui.Main.views[name].load();
+                }
             }
+        break;
         }
         ui.Slider.slide_to(name);
         ui.Slider.closeSliderMenu();
@@ -220,7 +249,28 @@ function add(name, indicator_opts, view_opts) {
                 , use_notify_sound: view_opts.use_notify_sound
                 , use_auto_update: view_opts.use_auto_update };
         break;
-        } 
+        }
+        $('#' + name + '_tweetview')[0].ontouchstart = function (e) {
+            event.preventDefault();
+            if (this.start === 1 || !event.touches.length) return;
+            this.start = 1;
+            var touch = event.touches[0];
+            this.startX = touch.pageX;
+            this.startY = touch.pageY;
+        }
+        $('#' + name + '_tweetview')[0].ontouchmove = function (e) {
+            event.preventDefault();
+            if (this.start !== 1 || !event.touches.length) {
+                return;
+            }
+            var touch = event.touches[0];
+            this.scrollTop += this.startY - touch.pageY;
+            this.startX = touch.pageX;
+            this.startY = touch.pageY;
+        }
+        $('#' + name + '_tweetview')[0].ontouchend = function (e) {
+            this.start = 0;
+        }
     } else {
         ui.Slider.slide_to(name);
     }
@@ -232,13 +282,19 @@ function add_indicator(name, opts) {
     var html = ui.Template.form_indicator(name, opts.title, opts.icon);
     if (name == 'search') {
         html = html.replace('{%STICK%}', 'stick_right');
+        $(html).insertBefore($('#indicator_add_btn').parent());
         ui.Slider.tweet_blocks.splice(ui.Slider.tweet_blocks.length, 0, 'search');
     } else {
         html = html.replace('{%STICK%}', 'no_stick');
-        ui.Slider.tweet_blocks.splice(ui.Slider.tweet_blocks.length - 1, 0, name);
+        var pos = $('#indicator_add_btn').parent().prevAll('.system_view');
+        if (pos.length == 0) {
+            $(html).insertBefore($('#indicator_add_btn').parent());
+            ui.Slider.tweet_blocks.splice(ui.Slider.tweet_blocks.length - 1, 0, name);
+        } else {
+            $(html).insertAfter($(pos.get(0)));
+            ui.Slider.tweet_blocks.splice(pos.length-1, 0, name);
+        }
     }
-
-    $(html).insertBefore($('#indicator_add_btn').parent());
 },
 
 add_view:
@@ -249,8 +305,14 @@ function add_view(name, opts) {
     if (name == 'search') {
         $('#main_page_slider').append(ui.Template.form_view(name, opts.title, 'tweetview'));
     } else {
-        $(ui.Template.form_view(name, opts.title, 'tweetview'))
-            .insertBefore('#search_tweetview');
+        var pos = $('#search_tweetview').prevAll('.system_view');
+        if (pos.length == 0) {
+            $(ui.Template.form_view(name, opts.title, 'tweetview'))
+                .insertBefore($('#search_tweetview'));
+        } else {
+            $(ui.Template.form_view(name, opts.title, 'tweetview'))
+                .insertAfter($(pos.get(0)));
+        }
     }
     // add to ui.Main.views
     var v = new widget.ListView('#'+name+'_tweetview', name, opts);
@@ -346,7 +408,7 @@ function slide_to(id) {
                 }
             );
         } else {
-            ui.Slider.me.css('marginLeft', (0 - page_offset * width + ui.Slider.column_num) +'px');
+            ui.Slider.me.css('marginLeft', (0 - page_offset * width) +'px');
             $('#main_page_slider').css('width', 'auto');
         }
     }
@@ -446,13 +508,15 @@ function slide_to_next() {
 },
 
 set_icon:
-function set_icon(name, icon) {
+function set_icon(name, icon, style) {
     var btn = $('#indication .indicator_btn[href="#'+name+'"]');
     var span_icon = btn.children('span');
     var img_icon = btn.children('img');
-    span_icon.hide();
     img_icon.show();
     img_icon.attr('src', icon);
+    if (style == ui.Slider.FLOAT_ICON) {
+        img_icon.addClass('float_icon')
+    }
 },
 
 set_unread:
@@ -607,6 +671,29 @@ function addDefaultView(name, opts) {
             , 'method': 'poll'
             , 'interval': 180
             , 'item_type': 'id'
+        }, opts));
+    break;
+    case 'favs':
+    ui.Slider.add('favs'
+        , {title: _('favs'), icon:'image/ic_fav.png'}
+        , $.extend({ 'type':'tweet', 'title': _('my_favs')
+            , 'load': ui.PeopleView.load_fav
+            , 'loadmore': ui.PeopleView.loadmore_fav
+            , 'load_success': ui.Main.load_tweet_success
+            , 'load_fail': null
+            , 'loadmore_success': ui.Main.loadmore_tweet_success
+            , 'loadmore_fail': null
+            , 'init': function (view) {
+                    view.screen_name = globals.myself.screen_name; 
+                    view.load();
+                }
+            , 'destroy': function (view) {
+                    ui.Slider.remove(view.name);
+                }            
+            , 'former': ui.Template.form_tweet
+            , 'method': 'poll'
+            , 'interval': 360
+            , 'item_type': 'page'
         }, opts));
     break;
     default: break;

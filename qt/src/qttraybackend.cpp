@@ -31,7 +31,7 @@ QtTrayBackend::QtTrayBackend(MainWindow* parent):
     m_mainWindow(parent),
     m_trayicon(new QSystemTrayIcon(this))
 {
-    m_trayicon->setIcon(QIcon::fromTheme("hotot_qt", QIcon("share/hotot-qt/html/image/ic64_hotot_classics.png")));
+    m_trayicon->setIcon(QIcon::fromTheme("hotot", QIcon("share/hotot-qt/html/image/ic64_hotot.png")));
     m_trayicon->show();
     connect(m_trayicon,
             SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
@@ -70,6 +70,3 @@ void QtTrayBackend::unreadAlert(QString number)
 {
     m_trayicon->setToolTip(i18n("%1 unread Messages").arg(number));
 }
-
-
-#include "qttraybackend.moc"

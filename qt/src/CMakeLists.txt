@@ -16,6 +16,17 @@ set(Hotot_QT_SRCS
     hototwebpage.cpp
     trayiconbackend.cpp
     qttraybackend.cpp
+    hototwebview.cpp
+)
+
+set(Hotot_QT_MOC_SRCS
+    mainwindow.h
+    formpost.h
+    hototrequest.h
+    hototwebpage.h
+    qttraybackend.h
+    trayiconbackend.h
+    hototwebview.h
 )
 
 if (HAVE_KDE)
@@ -23,11 +34,15 @@ if (HAVE_KDE)
         ${Hotot_QT_SRCS}
         kdetraybackend.cpp
     )
+    set(Hotot_QT_MOC_SRCS
+        ${Hotot_QT_MOC_SRCS}
+        kdetraybackend.h
+    )
 endif (HAVE_KDE)
 
-qt4_automoc(${Hotot_QT_SRCS})
+qt4_wrap_cpp(Hotot_QT_MOCS ${Hotot_QT_MOC_SRCS})
 qt4_wrap_ui(Hotot_QT_SRCS mainwindow.ui)
-add_executable(hotot-qt ${Hotot_QT_SRCS})
+add_executable(hotot-qt ${Hotot_QT_SRCS} ${Hotot_QT_MOCS})
 target_link_libraries(hotot-qt
     ${QT_QTCORE_LIBRARY}
     ${QT_QTGUI_LIBRARY}

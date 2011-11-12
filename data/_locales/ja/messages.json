@@ -15,6 +15,10 @@
 		"message": "プロフィールの名称を入力してください",
 		"description": "data/js/ui.welcome.js"
 	},
+	"themes": {
+		"message": "",
+		"description": "data/index.html"
+	},
 	"use_native_notify_system": {
 		"message": "ネイティブ通知システムを利用",
 		"description": ""
@@ -75,6 +79,10 @@
 		"message": "削除しました",
 		"description": "data/js/ui.main.js"
 	},
+	"interface_language": {
+		"message": "",
+		"description": "data/index.html"
+	},
 	"some_error_occur": {
 		"message": "エラーが出ました",
 		"description": "data/index.html"
@@ -126,6 +134,10 @@
 	"paste_from_clipboard": {
 		"message": "ペスト",
 		"description": "date/index.html"
+	},
+	"url_shortener": {
+		"message": "",
+		"description": "data/index.html"
 	},
 	"please_enter_the_recipient": {
 		"message": "宛先を選んでください",
@@ -339,9 +351,13 @@
 		"message": "友達",
 		"description": "data/js/ui.template.js"
 	},
-	"retweeted_by": {
-		"message": "拡散者:",
+	"mention_them": {
+		"message": "言及",
 		"description": "data/js/ui.template.js"
+	},
+	"undo_retweeting_dots": {
+		"message": "リツイートを解除する",
+		"description": "data/js/ui.main.js"
 	},
 	"same_signing_api_base": {
 		"message": "同じAPIでサーンする",
@@ -358,6 +374,10 @@
 	"join": {
 		"message": "登録する",
 		"description": "data/js/ui.template.js"
+	},
+	"image_uploader": {
+		"message": "",
+		"description": "data/index.html"
 	},
 	"my_power": {
 		"message": "魔法パワー",
@@ -391,12 +411,20 @@
 		"message": "表示する",
 		"description": "data/js/ui.template.js"
 	},
+	"open_a_list_dots": {
+		"message": "",
+		"description": "data/index.html"
+	},
 	"profile_name": {
 		"message": "プロファイル名",
 		"description": ""
 	},
 	"clean_token": {
 		"message": "トークンを削除する",
+		"description": "data/index.html"
+	},
+	"save_as_draft": {
+		"message": "",
 		"description": "data/index.html"
 	},
 	"information": {
@@ -411,17 +439,21 @@
 		"message": "出来る限り最新ツイートの対話をプレロードする",
 		"description": ""
 	},
-	"undo_retweeting_dots": {
-		"message": "リツイートを解除する",
-		"description": "data/js/ui.main.js"
+	"Insert_smiley": {
+		"message": "",
+		"description": "data/index.html"
 	},
 	"followers": {
 		"message": "フォロワー",
 		"description": "data/js/ui.template.js"
 	},
-	"reset_time": {
-		"message": "リセット・タイム",
+	"weakness": {
+		"message": "虚弱",
 		"description": "data/js/lib.twitterapi.js"
+	},
+	"extensions": {
+		"message": "プラグイン",
+		"description": ""
 	},
 	"retweets_view": {
 		"message": "リツイート",
@@ -551,8 +583,8 @@
 		"message": "自己紹介",
 		"description": ""
 	},
-	"weakness": {
-		"message": "虚弱",
+	"reset_time": {
+		"message": "リセット・タイム",
 		"description": "data/js/lib.twitterapi.js"
 	},
 	"mentions_view": {
@@ -691,6 +723,10 @@
 		"message": "確認する",
 		"description": ""
 	},
+	"language": {
+		"message": "",
+		"description": "data/index.html"
+	},
 	"messages": {
 		"message": "メッセージ",
 		"description": "data/js/ui.slider.js"
@@ -703,9 +739,13 @@
 		"message": "140文字を超えてしまいました",
 		"description": "data/js/ui.status_box.js"
 	},
-	"extensions": {
-		"message": "プラグイン",
-		"description": ""
+	"select_a_language": {
+		"message": "",
+		"description": "data/index.html"
+	},
+	"more_actions": {
+		"message": "もっと",
+		"description": "data/js/ui.template.js"
 	},
 	"preview_embedded_media": {
 		"message": "メディアをプレビューする",
@@ -743,6 +783,10 @@
 		"message": "フォローしていません",
 		"description": "data/js/ui.peopleview.js"
 	},
+	"click_to_compose_message": {
+		"message": "",
+		"description": "data/index.html"
+	},
 	"you_are_following": {
 		"message": "フォローしています",
 		"description": "data/js/ui.peopleview.js"
@@ -766,6 +810,10 @@
 	"you_are_followed_by_them": {
 		"message": "あなたをフォローしています",
 		"description": "data/js/ui.peopleview.js"
+	},
+	"open_a_profile_dots": {
+		"message": "",
+		"description": "data/index.html"
 	},
 	"pin_code": {
 		"message": "PINコード",
@@ -827,6 +875,10 @@
 		"message": "リツイートなう...",
 		"description": "data/js/ui.main.js"
 	},
+	"drafts": {
+		"message": "",
+		"description": "data/js/ui.status_box.js"
+	},
 	"oops_a_network_error_occurs": {
 		"message": "インターネット障害",
 		"description": "data/js/ui.welcome.js"
@@ -838,6 +890,10 @@
 	"more_effects_like_shadows_and_glow_of_widgets": {
 		"message": "もっとエフェクトを使う",
 		"description": "data/index.html"
+	},
+	"my_favs": {
+		"message": "",
+		"description": "data/js/ui.slider.js"
 	},
 	"slide_to_next_page": {
 		"message": "次のページにとばす",
@@ -871,9 +927,9 @@
 		"message": "外見",
 		"description": ""
 	},
-	"more_actions": {
-		"message": "もっと",
-		"description": "data/js/ui.template.js"
+	"favs_view": {
+		"message": "",
+		"description": "data/index.html"
 	},
 	"friends": {
 		"message": "友達",
@@ -895,8 +951,8 @@
 		"message": "あなたたちは友達です",
 		"description": "data/js/ui.peopleview.js"
 	},
-	"mention_them": {
-		"message": "言及",
+	"retweeted_by": {
+		"message": "拡散者:",
 		"description": "data/js/ui.template.js"
 	},
 	"reply_to": {

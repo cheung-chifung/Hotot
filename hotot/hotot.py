@@ -16,6 +16,7 @@ import dbus
 import dbus.service 
 import threading
 import time
+from dbus.mainloop.glib import DBusGMainLoop
 
 try:
     import appindicator
@@ -55,9 +56,30 @@ class HototDbusService(dbus.service.Object):
         dbus.service.Object.__init__(self, bus_name, HOTOT_DBUS_PATH)
         self.app = app
 
-    @dbus.service.method(dbus_interface=HOTOT_DBUS_NAME, sender_keyword='sender')
-    def unread(self, sender=None):
+    @dbus.service.method(dbus_interface=HOTOT_DBUS_NAME, in_signature="", out_signature="i")
+    def unread(self):
         return self.app.state['unread_count']
+
+    @dbus.service.signal(dbus_interface=HOTOT_DBUS_NAME)
+    def incoming(self, group, tweets):
+        pass
+
+    @dbus.service.method(dbus_interface=HOTOT_DBUS_NAME, in_signature="s", out_signature="")
+    def update_status(self, text):
+        self.app.update_status(text)
+
+    @dbus.service.method(dbus_interface=HOTOT_DBUS_NAME, in_signature="", out_signature="")
+    def show(self):
+        return self.app.window.present()
+
+    @dbus.service.method(dbus_interface=HOTOT_DBUS_NAME, in_signature="", out_signature="")
+    def hide(self):
+        return self.app.window.hide()
+
+    @dbus.service.method(dbus_interface=HOTOT_DBUS_NAME, in_signature="", out_signature="")
+    def quit(self):
+        return self.app.quit()
+
 
 class Hotot:
     def __init__(self):
@@ -65,12 +87,14 @@ class Hotot:
         self.active_profile = 'default'
         self.protocol = ''
         self.build_gui()
-        self.insplashing = False
         self.mm_indicators = {}
         self.trayicon_pixbuf = [None, None]
         self.state = {
-            'unread_count': 0
+            'unread_count': 0,
         }
+
+        self.inblinking = False
+        self.dbus_service = HototDbusService(self)
         if not HAS_INDICATOR:
             self.create_trayicon()
 
@@ -80,9 +104,9 @@ class Hotot:
     def build_gui(self):
         self.window = gtk.Window()
         gtk.window_set_default_icon_from_file(
-            utils.get_ui_object('image/ic64_hotot_classics.png'))
+            utils.get_ui_object('image/ic128_hotot.png'))
         self.window.set_icon_from_file(
-            utils.get_ui_object('image/ic64_hotot_classics.png'))
+            utils.get_ui_object('image/ic128_hotot.png'))
 
         self.window.set_title(_("Hotot"))
         self.window.set_position(gtk.WIN_POS_CENTER)
@@ -158,7 +182,13 @@ class Hotot:
         self.mm.connect('server-display', self.on_mm_server_activate)
         self.mm.show()
 
-    def unread_alert(self, subtype, sender, body="", count="0"): 
+    def emit_incoming(self, group, tweets):
+        self.dbus_service.incoming(group, tweets)
+
+    def update_status(self, text):
+        self.webv.execute_script('update_status("%s")' % text)
+
+    def unread_alert(self, subtype, sender, body="", count=0):
         if HAS_ME_MENU:
             try:
                 idr = indicate.Indicator()
@@ -174,20 +204,20 @@ class Hotot:
             self.mm_indicators[subtype] = idr
 
         if count > 0:
-            self.start_splash_icon()
+            self.start_blinking()
         else:
-            self.stop_splash_icon()
+            self.stop_blinking()
         
         if not HAS_INDICATOR:
             self.trayicon.set_tooltip("Hotot: %d unread tweets/messages." % count if count > 0 else _("Hotot: Click to Active."))
         self.state['unread_count'] = count
 
-    def start_splash_icon(self):
-        if self.insplashing:
+    def start_blinking(self):
+        if self.inblinking:
             return
-        def splash_proc():
+        def blink_proc():
             flag = 0
-            while self.insplashing:
+            while self.inblinking:
                 if HAS_INDICATOR:
                     self.indicator.set_status(appindicator.STATUS_ATTENTION if flag else appindicator.STATUS_ACTIVE)
                 else:
@@ -198,12 +228,12 @@ class Hotot:
                 self.indicator.set_status(appindicator.STATUS_ACTIVE)
             else:
                 self.trayicon.set_from_pixbuf(self.trayicon_pixbuf[0])
-        self.insplashing = True
-        th = threading.Thread(target = splash_proc)
+        self.inblinking = True
+        th = threading.Thread(target = blink_proc)
         th.start()
 
-    def stop_splash_icon(self):
-        self.insplashing = False
+    def stop_blinking(self):
+        self.inblinking = False
 
     def on_mm_activate(self, idr, arg1):
         if HAS_ME_MENU:
@@ -251,7 +281,7 @@ class Hotot:
         self.quit()
 
     def quit(self, *args):
-        self.stop_splash_icon()
+        self.stop_blinking()
         gtk.gdk.threads_leave()
         self.window.destroy()
         gtk.main_quit()
@@ -306,7 +336,7 @@ class Hotot:
         self.trayicon_pixbuf[0] = gtk.gdk.pixbuf_new_from_file(
             utils.get_ui_object('image/ic24_hotot_mono_light.svg'))
         self.trayicon_pixbuf[1] = gtk.gdk.pixbuf_new_from_file(
-            utils.get_ui_object('image/ic24_hotot_mono_dark.svg'))
+            utils.get_ui_object('image/ic24_hotot_mono_light_blink.svg'))
         self.trayicon.set_from_pixbuf(self.trayicon_pixbuf[0])
         self.trayicon.set_visible(True)
 
@@ -317,7 +347,7 @@ class Hotot:
         if self.window.is_active():
             self.window.hide()
         else:
-            self.stop_splash_icon()
+            self.stop_blinking()
             self.window.present()
 
     def on_trayicon_popup_menu(self, icon, button, activate_time):
@@ -342,15 +372,20 @@ class Hotot:
         self.is_sign_in = False
 
 def main():
+    DBusGMainLoop(set_as_default=True)
+
     global HAS_INDICATOR
     gtk.gdk.threads_init()
     config.loads();
     try:
+        import ctypes
+        libc = ctypes.CDLL('libc.so.6')
+        libc.prctl(15, 'hotot', 0, 0, 0)
+    except:
         import dl
         libc = dl.open('/lib/libc.so.6')
         libc.call('prctl', 15, 'hotot', 0, 0, 0)
-    except:
-        pass
+        
     agent.init_notify()
     app = Hotot()
     agent.app = app
@@ -364,9 +399,6 @@ def main():
         indicator.set_menu(app.menu_tray)
         app.indicator = indicator
 
-    from dbus.mainloop.glib import DBusGMainLoop
-    DBusGMainLoop(set_as_default=True)
-    HDService = HototDbusService(app)
 
     gtk.gdk.threads_enter()
     gtk.main()

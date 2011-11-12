@@ -20,6 +20,9 @@
 #ifndef HOTOTWEBPAGE_H
 #define HOTOTWEBPAGE_H
 
+#include "common.h"
+
+// Qt
 #include <QWebPage>
 #include <QByteArray>
 
@@ -35,6 +38,9 @@ protected Q_SLOTS:
 protected:
     virtual bool acceptNavigationRequest(QWebFrame * frame, const QNetworkRequest & request, NavigationType type);
     virtual void javaScriptAlert(QWebFrame * frame, const QString & msg);
+#ifdef MEEGO_EDITION_HARMATTAN
+    virtual bool javaScriptConfirm(QWebFrame *frame, const QString &msg);
+#endif
     bool handleUri(const QString& string);
 private:
     MainWindow* m_mainWindow;

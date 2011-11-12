@@ -408,9 +408,10 @@ list_vcard_t:
 
 search_header_t: 
 '<div class="header_frame"> \
+    <div class="search_box"> \
     <input class="search_entry entry" type="text"/><a href="#" class="search_btn button">Search</a> \
     <div class="search_people_result"> \
-        <label class="label">One user matched: </label> <span class="search_people_inner"></span>\
+        <span>One user matched: </span> <span class="search_people_inner"></span>\
     </div>\
     <div class="search_view_toggle">\
         <ol class="search_view_toggle_btns radio_group">\
@@ -428,6 +429,7 @@ search_header_t:
          - <span>Make sure all words are spelled correctly.</span><br/> \
          - <span>Try different keywords.</span><br/> \
          - <span>Try more general keywords.</span><br/></p> \
+    </div> \
     </div> \
 </div>',
 
@@ -448,7 +450,7 @@ retweets_header_t:
 
 view_t:
 '<div id="{%ID%}" \
-    name="{%NAME%}" class="listview {%CLASS%}"> \
+    name="{%NAME%}" class="listview {%CLASS%} {%ROLE%}"> \
     <div class="listview_header"><div class="header_content">{%HEADER%}</div></div> \
     <ul class="listview_body"></ul> \
     <div class="listview_footer"> \
@@ -457,44 +459,47 @@ view_t:
 </div>',
 
 indicator_t:
-    '<div class="{%STICK%}" name="{%TARGET%}"><a class="indicator_btn" href="#{%TARGET%}" title="{%TITLE%}"><span class="icon" style="background-image:url({%ICON%})"></span><img class="icon"/></a><span class="shape"></span></div>',
+    '<div class="{%STICK%} {%ROLE%}" name="{%TARGET%}"><a class="indicator_btn" href="#{%TARGET%}" title="{%TITLE%}"><img class="icon"/><span class="icon" style="background-image:url({%ICON%})"></span></a><span class="shape"></span></div>',
 
 kismet_rule_t:
 '<li><a class="kismet_rule" name="{%NAME%}" type="{%TYPE%}" method="{%METHOD%}"\
     disabled="{%DISABLED%}" field="{%FIELD%}" pattern="{%PATTERN%}"     \
     actions="{%ACTIONS%}" {%ADDITION%} href="#">{%NAME%}</a></li>',
 
+status_draft_t:
+'<li mode="{%MODE%}" reply_to_id="{%REPLY_TO_ID%}" reply_text="{%REPLY_TEXT%}" recipient="{%RECIPIENT%}"><a class="text">{%TEXT%}</a><a class="btn_draft_clear" href="#"></a></li>',
+
 preview_link_reg: {
 'img.ly': {
-    reg: new RegExp('href="(http:\\/\\/img.ly\\/([a-zA-Z0-9]+))"','g'),
+    reg: new RegExp('href="(http:\\/\\/img.ly\\/([a-zA-Z0-9_\\-]+))"','g'),
     base: 'http://img.ly/show/thumb/'
 },
 'twitpic.com': {
-    reg: new RegExp('href="(http:\\/\\/twitpic.com\\/([a-zA-Z0-9]+))"','g'),
+    reg: new RegExp('href="(http:\\/\\/twitpic.com\\/([a-zA-Z0-9_\\-]+))"','g'),
     base: 'http://twitpic.com/show/thumb/'
 },
 'twitgoo.com': {
-    reg: new RegExp('href="(http:\\/\\/twitgoo.com\\/([a-zA-Z0-9]+))"','g'),
+    reg: new RegExp('href="(http:\\/\\/twitgoo.com\\/([a-zA-Z0-9_\\-]+))"','g'),
     base: 'http://twitgoo.com/show/thumb/'
 },
 'yfrog.com': {
-    reg: new RegExp('href="(http:\\/\\/yfrog.com\\/([a-zA-Z0-9]+))"','g'),
+    reg: new RegExp('href="(http:\\/\\/yfrog.com\\/([a-zA-Z0-9_\\-]+))"','g'),
     tail: '.th.jpg'
 },
 'moby.to': {
-    reg: new RegExp('href="(http:\\/\\/moby.to\\/([a-zA-Z0-9]+))"','g'),
+    reg: new RegExp('href="(http:\\/\\/moby.to\\/([a-zA-Z0-9_\\-]+))"','g'),
     tail: ':thumbnail'
 },
 'instagr.am': {
-    reg: new RegExp('href="(http:\\/\\/instagr.am\\/p\\/([a-zA-Z0-9]+)\\/*)"','g'),
+    reg: new RegExp('href="(http:\\/\\/instagr.am\\/p\\/([a-zA-Z0-9_\\-]+)\\/*)"','g'),
     tail: 'media?size=m'
 },
 'plixi.com': {
-    reg: new RegExp('href="(http:\\/\\/plixi.com\\/p\\/([a-zA-Z0-9]+))"','g'),
+    reg: new RegExp('href="(http:\\/\\/plixi.com\\/p\\/([a-zA-Z0-9_\\-]+))"','g'),
     base: 'http://api.plixi.com/api/tpapi.svc/imagefromurl?size=thumbnail&url='
 },
 'picplz.com': {
-    reg: new RegExp('href="(http:\\/\\/picplz.com\\/([a-zA-Z0-9]+))"','g'), 
+    reg: new RegExp('href="(http:\\/\\/picplz.com\\/([a-zA-Z0-9_\\-]+))"','g'), 
     tail: '/thumb/' 
 },
 'raw': {
@@ -597,16 +602,21 @@ function init() {
     };
 
     ui.Template.view_m = {
-        ID:'', CLASS:'tweetview', NAME: '', CAN_CLOSE: ''
+        ID:'', CLASS:'tweetview', NAME: '', CAN_CLOSE: '', ROLE: ''
     };
 
     ui.Template.indicator_m = {
-        TARGET: '', TITLE: '', ICON: ''
+        TARGET: '', TITLE: '', ICON: '', ROLE: ''
     };
 
     ui.Template.kismet_rule_m = {
           TYPE:'', DISABLED:'', FIELD:'', PATTERN:''
         , METHOD:'', ACTIONS: '', ADDITION: '', NAME: ''
+    };
+
+    ui.Template.status_draft_m = {
+          MODE:'', TEXT:'', REPLY_TO_ID: '', REPLY_TEXT: ''
+        , RECIPIENT: ''
     };
 
     ui.Template.people_vcard_m = {
@@ -672,7 +682,8 @@ function form_tweet (tweet_obj, pagename) {
         retweet_id = tweet_obj.id_str;
     }
     var reply_name = tweet_obj.in_reply_to_screen_name;
-    var reply_id = tweet_obj.in_reply_to_status_id_str;    
+    var reply_id = tweet_obj.hasOwnProperty('in_reply_to_status_id_str')
+            ? tweet_obj.in_reply_to_status_id_str:tweet_obj.in_reply_to_status_id;    
     var reply_str = (reply_id != null) ?
         _('reply_to') + ' <a class="who_href" href="#'
             + reply_name + '">'
@@ -787,7 +798,8 @@ function form_retweeted_by(tweet_obj, pagename) {
         retweet_id = tweet_obj.id_str;
     }
     var reply_name = tweet_obj.in_reply_to_screen_name;
-    var reply_id = tweet_obj.in_reply_to_status_id_str;    
+    var reply_id = tweet_obj.hasOwnProperty('in_reply_to_status_id_str')
+            ? tweet_obj.in_reply_to_status_id_str:tweet_obj.in_reply_to_status_id;    
     var reply_str = (reply_id != null) ?
         _('reply to') + ' <a class="who_href" href="#'
             + reply_name + '">'
@@ -951,6 +963,11 @@ function form_view(name, title, cls) {
     } else {
         m.CAN_CLOSE = 'block';
     }
+    if (ui.Slider.system_views.hasOwnProperty(name)) {
+        m.ROLE = 'system_view';
+    } else {
+        m.ROLE = 'custom_view';
+    }
     return ui.Template.render(ui.Template.view_t, m);
 },
 
@@ -960,6 +977,11 @@ function form_indicator(target, title, icon) {
     m.TARGET = target
     m.TITLE = title;
     m.ICON = icon;
+    if (ui.Slider.system_views.hasOwnProperty(target)) {
+        m.ROLE = 'system_view';
+    } else {
+        m.ROLE = 'custom_view';
+    }
     return ui.Template.render(ui.Template.indicator_t, m);
 },
 
@@ -975,6 +997,22 @@ function form_kismet_rule(rule) {
     m.FIELD = rule.field;
     m.DISABLED = rule.disabled;
     return ui.Template.render(ui.Template.kismet_rule_t, m);
+},
+
+form_status_draft:
+function form_status_draft(draft) {
+    var m = ui.Template.status_draft_m;
+    m.MODE = draft.mode;
+    m.TEXT = draft.text;
+    if (m.MODE == ui.StatusBox.MODE_REPLY) {
+        m.REPLY_TO_ID = draft.reply_to_id;
+        m.REPLY_TEXT = draft.reply_text;
+    } else if (m.MODE == ui.StatusBox.MODE_DM) {
+        m.RECIPIENT = draft.recipient;
+    } else if (m.MODE == ui.StatusBox.MODE_IMG) {
+        
+    }
+    return ui.Template.render(ui.Template.status_draft_t, m);
 },
 
 fill_people_vcard:

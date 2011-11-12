@@ -18,8 +18,11 @@ use_same_sign_api_base: true,
 
 source: 'Hotot',
 
+default_error_method: 'notify',
+
 http_code_msg_table : {
-      401: 'Server cannot authenticate you. Please check your username/password and API base.'
+      0: 'Lost connection with server.'
+    , 401: 'Server cannot authenticate you. Please check your username/password and API base.'
     , 404: 'The URL you request does not exist. Please check your API Base/OAuth Base/Search Base.'
     , 500: 'Server is broken. Please try again later.'
     , 502: 'Server is down or being upgraded. Please try again later.'
@@ -39,15 +42,20 @@ function default_error_handler(url, xhr, textStatus, errorThrown) {
         tech_info = 'HTTP Code:' + xhr.status 
             + '\nReason:'+ xhr.statusText + '\nURL:' + url;
     }
-    if (xhr.status == 0) {
-        toast.set('Lost connection with server ...').show();
-    } else {
-        try {
-            ui.ErrorDlg.alert('Ooops, An API Error Occurred!', msg, tech_info);
-        } catch (e) {
-            hotot_log('Error:'+xhr.status, xhr.statusText);
-        }
+    switch (lib.twitterapi.default_error_method) {
+        case 'notify':
+            hotot_notify('Ooops, An Error Occurred!', msg, null, 'content');
+        break;
+        case 'dialog':
+            ui.ErrorDlg.alert('Ooops, An Error Occurred!', msg, tech_info);
+        break;
+        case 'toast':
+            toast.set('Error #' + xhr.status + ': ' + msg);
+        break;
+        default:
+        break;
     }
+    hotot_log('Error #' + xhr.status + ',' + xhr.statusText, msg +' '+url);
     return;
 },
 
@@ -164,13 +172,13 @@ function do_ajax(method, url, params, headers, on_success, on_error){
 },
 
 update_status:
-function update_status(text, reply_to_id, on_success) {
+function update_status(text, reply_to_id, on_success, on_error) {
     var url = lib.twitterapi.api_base + 'statuses/update.json';
     var params = {'status': text, 'include_entities': '1'};
     if (reply_to_id) {
         params['in_reply_to_status_id'] = reply_to_id;
     }
-    lib.twitterapi.post(url, params, on_success);
+    lib.twitterapi.post(url, params, on_success, on_error);
 },
 
 retweet_status:
@@ -186,7 +194,7 @@ function destroy_status(retweet_id, on_success) {
 },
 
 new_direct_messages:
-function new_direct_messages(text, user_id, screen_name, on_success) {
+function new_direct_messages(text, user_id, screen_name, on_success, on_error) {
     var url = lib.twitterapi.api_base + 'direct_messages/new.json';
     var params = {
         'text': text,
@@ -194,7 +202,7 @@ function new_direct_messages(text, user_id, screen_name, on_success) {
     };
     if (user_id != null)
         params['user_id'] = user_id;
-    lib.twitterapi.post(url, params, on_success);
+    lib.twitterapi.post(url, params, on_success, on_error);
 },
 
 destroy_direct_messages:
@@ -351,7 +359,7 @@ function get_retweeted_by_whom(tweet_id, count, on_success) {
 
 get_user_timeline:
 function get_user_timeline(user_id, screen_name, since_id, 
-    max_id, count, on_success) {
+    max_id, count, on_success, on_error) {
     var url = lib.twitterapi.api_base + 'statuses/user_timeline.json';
     var params={
         'include_entities': '1',
@@ -366,7 +374,7 @@ function get_user_timeline(user_id, screen_name, since_id,
         params['user_id'] = user_id;
     if (screen_name!=null)
         params['screen_name'] = screen_name;
-    lib.twitterapi.get(url, params, on_success);
+    lib.twitterapi.get(url, params, on_success, on_error);
     return;
 },
 
@@ -542,7 +550,7 @@ function get_user_lists(screen_name, cursor, on_success) {
 },
 
 get_list_statuses:
-function get_list_statuses(owner_screen_name, slug, since_id, max_id, on_success) {
+function get_list_statuses(owner_screen_name, slug, since_id, max_id, on_success, on_error) {
     var url = lib.twitterapi.api_base + 'lists/statuses.json';
     var params = {
         'include_entities': '1',
@@ -553,7 +561,7 @@ function get_list_statuses(owner_screen_name, slug, since_id, max_id, on_success
         params['since_id'] = since_id;
     if (max_id != null)
         params['max_id'] = max_id;
-    lib.twitterapi.get(url, params, on_success);
+    lib.twitterapi.get(url, params, on_success, on_error);
 },
 
 get_list_subscribers:
@@ -656,9 +664,9 @@ function update_list(owner_screen_name, slug, description, mode, on_success) {
 },
 
 verify:
-function verify(on_success) {
+function verify(on_success, on_error) {
     var url = lib.twitterapi.api_base + 'account/verify_credentials.json';
-    lib.twitterapi.get(url, {}, on_success);
+    lib.twitterapi.get(url, {}, on_success, on_error);
 },
 
 search:

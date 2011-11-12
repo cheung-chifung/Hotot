@@ -17,7 +17,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "hototwebpage.h"
+#include "common.h"
+
+// Qt
 #include <QDebug>
 #include <QProcess>
 #include <QClipboard>
@@ -26,13 +28,20 @@
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QWebFrame>
+
+#ifdef MEEGO_EDITION_HARMATTAN
+#include <MMessageBox>
+#endif
+
+// Hotot
+#include "hototwebpage.h"
 #include "hototrequest.h"
 #include "mainwindow.h"
 
 HototWebPage::HototWebPage(MainWindow *window, QObject* parent) :
     QWebPage(parent)
 {
-    this->m_mainWindow = window;
+    m_mainWindow = window;
 }
 
 bool HototWebPage::acceptNavigationRequest(QWebFrame * frame, const QNetworkRequest & request, NavigationType type)
@@ -74,13 +83,13 @@ bool HototWebPage::handleUri(const QString& originmsg)
                     QStringList fileNames = dialog.selectedFiles();
                     if (fileNames.size() > 0) {
                         QString callback = msg.section("/", 2, 2);
-                        this->currentFrame()->evaluateJavaScript(QString("%1(\"%2\")").arg(callback, fileNames[0]));
+                        currentFrame()->evaluateJavaScript(QString("%1(\"%2\")").arg(callback, fileNames[0]));
                     }
                 }
             } else if (method == "save_avatar") {
             } else if (method == "log") {
             } else if (method == "paste_clipboard_text") {
-                this->triggerAction(QWebPage::Paste);
+                triggerAction(QWebPage::Paste);
             } else if (method == "set_clipboard_text") {
                 QClipboard *clipboard = QApplication::clipboard();
                 if (clipboard)
@@ -88,13 +97,13 @@ bool HototWebPage::handleUri(const QString& originmsg)
             }
         } else if (type == "request") {
             QString json = QUrl::fromPercentEncoding(msg.section("/", 1, -1).toUtf8());
-            this->currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json = %1 ;").arg(json));
-            QString request_uuid = this->currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json.uuid")).toString();
-            QString request_method = this->currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json.method")).toString();
-            QString request_url = this->currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json.url")).toString();
-            QMap<QString, QVariant> request_params = this->currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json.params")).toMap();
-            QMap<QString, QVariant> request_headers = this->currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json.headers")).toMap();
-            QList<QVariant> request_files = this->currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json.files")).toList();
+            currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json = %1 ;").arg(json));
+            QString request_uuid = currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json.uuid")).toString();
+            QString request_method = currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json.method")).toString();
+            QString request_url = currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json.url")).toString();
+            QMap<QString, QVariant> request_params = currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json.params")).toMap();
+            QMap<QString, QVariant> request_headers = currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json.headers")).toMap();
+            QList<QVariant> request_files = currentFrame()->evaluateJavaScript(QString("hotot_qt_request_json.files")).toList();
 
             HototRequest* request = new HototRequest(
                 request_uuid,
@@ -103,8 +112,8 @@ bool HototWebPage::handleUri(const QString& originmsg)
                 request_params,
                 request_headers,
                 request_files,
-                this->userAgentForUrl(request_url),
-                this->networkAccessManager());
+                userAgentForUrl(request_url),
+                networkAccessManager());
             connect(request, SIGNAL(requestFinished(HototRequest*, QByteArray, QString, bool)), this, SLOT(requestFinished(HototRequest*, QByteArray, QString, bool)));
             if (!request->doRequest())
                 delete request;
@@ -127,6 +136,19 @@ void HototWebPage::javaScriptAlert(QWebFrame *frame, const QString &msg)
     handleUri(msg);
 }
 
+#ifdef MEEGO_EDITION_HARMATTAN
+bool HototWebPage::javaScriptConfirm(QWebFrame *frame, const QString &msg)
+{
+    Q_UNUSED(frame);
+    MMessageBox *messageBox = new MMessageBox(msg, M::YesButton|M::NoButton);
+    //int result = messageBox->exec(m_mainWindow);
+    messageBox->appear(MSceneWindow::DestroyWhenDone);
+    int result = 0;
+    return (result == MDialog::Accepted);
+}
+
+#endif
+
 void HototWebPage::requestFinished(HototRequest* request, QByteArray result, QString uuid , bool error)
 {
     QString strresult = QString::fromUtf8(result);
@@ -134,7 +156,7 @@ void HototWebPage::requestFinished(HototRequest* request, QByteArray result, QSt
         QString scripts = QString("widget.DialogManager.alert('%1', '%2');\n"
                                   "lib.network.error_task_table['%3']('');\n"
                                  ).arg("Ooops, an Error occurred!", strresult, uuid);
-        this->currentFrame()->evaluateJavaScript(scripts);
+        currentFrame()->evaluateJavaScript(scripts);
     } else {
         QString scripts;
         if (strresult.startsWith("[") || strresult.startsWith("{"))
@@ -143,9 +165,7 @@ void HototWebPage::requestFinished(HototRequest* request, QByteArray result, QSt
         else
             scripts = QString("lib.network.success_task_table['%1']('%2');"
                              ).arg(uuid, strresult);
-        this->currentFrame()->evaluateJavaScript(scripts);
+        currentFrame()->evaluateJavaScript(scripts);
     }
     request->deleteLater();
 }
-
-#include "hototwebpage.moc"

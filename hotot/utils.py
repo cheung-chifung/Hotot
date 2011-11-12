@@ -19,6 +19,9 @@ supported_locate = {
       'en_US': 'en'
     , 'zh_CN': 'zh_CN'
     , 'ja_JP': 'ja'
+    , 'fr_FR': 'fr'
+    , 'es_ES': 'es'
+    , 'pt_BR': 'pt_BR'
 }
 
 _browser = ''
@@ -198,4 +201,3 @@ def get_locale():
     if lang in supported_locate:
         return supported_locate[lang]
     return 'en'
-
